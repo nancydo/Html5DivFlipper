@@ -1,0 +1,19 @@
+.rectangleOff
+{
+	background-color: green;
+	border: 1px solid black;
+	position: absolute;
+}
+
+.rectangleOn
+{
+	border: 1px solid black;
+	position: absolute;
+}
+
+
+#flipperGrid
+{
+	position:relative;
+	border: 1px solid red;
+}
