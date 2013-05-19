@@ -19,7 +19,9 @@
 
 #flipperGrid
 {
-	position:relative;
+	position:fixed;
+	top: 50%;
+	left: 50%;
 	border: 1px solid red;
 }
 

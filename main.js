@@ -71,30 +71,12 @@ function SetupGrid()
 			rectangle.onclick = GridClick;
 			flipperGrid.appendChild(rectangle);
 			GRID[row][col] = rectangle;
-
 		}
 	}
-}
 
-function CenterTiles()
-{
-	var top = (window.innerHeight - GRID_SIZE * (RECTANGLE_SIZE + RECTANGLE_PADDING)) / 2;
-	var left = (window.innerWidth - GRID_SIZE * (RECTANGLE_SIZE + RECTANGLE_PADDING)) / 2;
-	for (var i = 0; i < GRID_SIZE; i++)
-	{
-		for (var j = 0; j < GRID_SIZE; j++)
-		{
-			var rectangle = GRID[i][j];
-			rectangle.style.left = left + (i * (RECTANGLE_SIZE + RECTANGLE_PADDING)) + "px";
-			rectangle.style.top =  top + (j * (RECTANGLE_SIZE + RECTANGLE_PADDING)) + "px";
-		}
-	}
-}
-
-window.onresize = function()
-{
-	CenterTiles();
-
+	var width = RECTANGLE_SIZE * GRID_SIZE + (GRID_SIZE-1)*RECTANGLE_PADDING;
+	flipperGrid.style.marginTop = -width / 2 + "px";
+	flipperGrid.style.marginLeft = -width / 2 + "px";
 }
 
 // The main function called on window load
