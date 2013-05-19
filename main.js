@@ -68,8 +68,11 @@ function SetupGrid()
 			rectangle.className = "rectangleOff";
 			rectangle.id = row + ":" + col;
 			rectangle.style.width = rectangle.style.height = RECTANGLE_SIZE + "px";
+			rectangle.style.left = col * (RECTANGLE_SIZE + RECTANGLE_PADDING) + "px";
+			rectangle.style.top = row * (RECTANGLE_SIZE + RECTANGLE_PADDING)+ "px";
 			rectangle.onclick = GridClick;
 			flipperGrid.appendChild(rectangle);
+
 			GRID[row][col] = rectangle;
 		}
 	}
@@ -83,7 +86,6 @@ function SetupGrid()
 window.onload = function()
 {
 	SetupGrid();
-	CenterTiles();
 
 	// Add event handler for the reset button
 	var resetButton = document.getElementById("reset");
