@@ -4,10 +4,8 @@
 	background-color: green;
 	border: 1px solid black;
 	position: absolute;
-	/* These transitions are supposed to change the color in case I hover over the button */
-	-webkit-transition: background 0.5s,color 0.5s;
-	-moz-transition: background 0.5s,color 0.5s;
-	transition: background 0.5s,color 0.5s;
+
+	transition: 0.5s;
 }
 
 .rectangleOn
@@ -16,10 +14,7 @@
 	background-color: white;
 	border: 1px solid black;
 	position: absolute;
-	/* These transitions are supposed to change the color in case I hover over the button */
-	-webkit-transition: background 0.5s,color 0.5s;
-	-moz-transition: background 0.5s,color 0.5s;
-	transition: background 0.5s,color 0.5s;
+	transition: 0.5s;
 }
 
 #flipperGrid
