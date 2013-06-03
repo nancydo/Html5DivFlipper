@@ -89,9 +89,8 @@ Level.prototype.UpdateClicks = function()
 
 Level.prototype.GetHint = function()
 {
-	if (this.hints > this.solution.length)
+	if (this.hints >= this.solution.length)
 		return;
-
 	this.winningGrid.SetHintPoint(this.solution[this.hints]);
 	this.hints++;
 }

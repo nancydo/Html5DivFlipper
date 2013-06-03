@@ -23,3 +23,8 @@ Rectangle.prototype.Flip = function()
 	if (this.div)
 		this.div.className = this.on ? "rectangleOn" : "rectangleOff";
 };
+
+Rectangle.prototype.Hint = function()
+{
+	this.div.className = "hint";
+}
