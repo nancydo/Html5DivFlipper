@@ -34,6 +34,10 @@ Level.prototype.ProcessClick = function(id)
 	this.currentGrid.GridClick(id);
 	this.clicks++;
 	this.UpdateClicks();
+
+	DROPLET.currentTime=0 
+	DROPLET.play();
+	
 	if (this.IsComplete())
 	{
 		CURRENT_LEVEL = new Level(GRID_SIZE, LEVEL_NUMBER++);

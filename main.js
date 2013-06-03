@@ -13,9 +13,9 @@ var GRID;
 // We should set up our globals here.
 function InitGlobals()
 {
-	/*BG_MUSIC.volume = 0.4;
+	BG_MUSIC.volume = 0.4;
 	BG_MUSIC.play();
-	BG_MUSIC.loop = true;*/
+	BG_MUSIC.loop = true;
 }
 
 // The main function called on window load
