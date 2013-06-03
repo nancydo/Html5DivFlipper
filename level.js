@@ -1,11 +1,26 @@
 // A class representing a level
+var RECTANGLE_SIZE = 60;
+var RECTANGLE_PADDING = 5;
+
 Level = function(gridSize, levelNumber)
 {
 	this.baseState = levelNumber % ENUM_BASE_STATE.NUM_PATTERNS;
-	this.currentGrid = new Grid(gridSize, this.baseState);
-	this.winningGrid = new Grid(gridSize, this.baseState);
+	this.currentGrid = new Grid(gridSize, this.baseState, RECTANGLE_SIZE, RECTANGLE_PADDING);
+	this.winningGrid = new Grid(gridSize, this.baseState, RECTANGLE_SIZE / 2, RECTANGLE_PADDING / 2 + 1);
 
-	this.currentGrid.CreateDivs();
+	var flipperGrid = document.getElementById("flipperGrid");
+	this.currentGrid.CreateDivs(flipperGrid);
+	flipperGrid.style.width = flipperGrid.style.height = this.currentGrid.Width() + "px";
+
+	var solutionGrid = document.getElementById("solutionGrid");
+	this.winningGrid.CreateDivs(solutionGrid);
+	solutionGrid.style.width = solutionGrid.style.height = this.winningGrid.Width() + "px";
+
+
+	// Center the gameArea on the screen
+	var width = this.currentGrid.Width() + this.winningGrid.Width();
+	$("gameArea").style.marginTop = -width / 2 + "px";
+	$("gameArea").style.marginLeft = -width / 2 + "px";
 
 	this.clicks = 0;
 	this.hints = 0;
@@ -13,6 +28,11 @@ Level = function(gridSize, levelNumber)
 	this.RandomlyClick(Math.floor(levelNumber / ENUM_BASE_STATE.NUM_PATTERNS));
 	this.UpdateClicks();
 };
+
+Level.prototype.ProcessClick = function()
+{
+	this.currentGrid.GridClick(1);
+}
 
 // Randomly click numClicks times and store the solution
 Level.prototype.RandomlyClick = function(numClicks)
@@ -38,7 +58,6 @@ Level.prototype.Reset = function()
 	this.currentGrid.FlipBaseState(this.baseState);
 	for (var i = 0; i < this.solution.length; i++)
 	{
-		alert(this.solution[i].x + " " + this.solution[i].y);
 		this.currentGrid.FlipSquare(this.solution[i].x, this.solution[i].y);
 	}
 

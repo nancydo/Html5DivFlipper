@@ -18,10 +18,23 @@
 	transition: 0.5s;
 }
 
-#flipperGrid
-{
+
+#gameArea
+{	
 	position:fixed;
 	top: 50%;
 	left: 50%;
-	border: 1px solid red;
+	padding: 0px;
+	margin: 0px;
+}
+
+#flipperBoard
+{
+	float: left;
+}
+
+#gameMenu
+{
+	position: fixed;
+	margin-left: 350px;
 }

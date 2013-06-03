@@ -1,14 +1,13 @@
 // Grid Globals
-var RECTANGLE_SIZE = 60;
-var RECTANGLE_PADDING = 5;
-
 var ENUM_BASE_STATE = { ALL_ON: 0, OUTLINE: 1, BACKSLASH: 2, DIAMOND: 3, NUM_PATTERNS: 4};
 
 // Grid Class
-Grid = function(gridSize, baseState)
+Grid = function(gridSize, baseState, rectangleSize, rectanglePadding)
 {
 	this.grid = Create2DArray(gridSize, gridSize);
 	this.gridSize = gridSize;
+	this.rectangleSize = rectangleSize;
+	this.rectanglePadding = rectanglePadding;
 
 	for (var row = 0; row < gridSize; row++)
 	{
@@ -22,10 +21,8 @@ Grid = function(gridSize, baseState)
 	this.FlipBaseState(baseState);
 }
 
-Grid.prototype.CreateDivs = function()
+Grid.prototype.CreateDivs = function(outerDiv)
 {
-	var flipperGrid = document.getElementById("flipperGrid");
-
 	for (var row = 0; row < this.gridSize; row++)
 	{
 		for (var col = 0; col < this.gridSize; col++)
@@ -34,22 +31,23 @@ Grid.prototype.CreateDivs = function()
 			var div = document.createElement("div");
 			div.className = rectangle.on ? "rectangleOn" : "rectangleOff";
 			div.id = row + ":" + col;
-			div.style.width = div.style.height = RECTANGLE_SIZE + "px";
-			div.style.left = col * (RECTANGLE_SIZE + RECTANGLE_PADDING) + "px";
-			div.style.top = row * (RECTANGLE_SIZE + RECTANGLE_PADDING)+ "px";
+			div.style.width = div.style.height = this.rectangleSize + "px";
+			div.style.left = col * (this.rectangleSize + this.rectanglePadding) + "px";
+			div.style.top = row * (this.rectangleSize + this.rectanglePadding)+ "px";
 			var self = this;
 			div.onclick = function() { self.GridClick(this.id); };
 			this.grid[row][col].div = div;
-			flipperGrid.appendChild(div);
+			outerDiv.appendChild(div);
 		}
 	}
-
-	var width = RECTANGLE_SIZE * GRID_SIZE + (GRID_SIZE-1)*RECTANGLE_PADDING;
-	flipperGrid.style.marginTop = -width / 2 + "px";
-	flipperGrid.style.marginLeft = -width / 2 + "px";
 }
 
-Grid.prototype.GridClick = function(id, event)
+Grid.prototype.Width = function()
+{
+	return this.rectangleSize * GRID_SIZE + (GRID_SIZE-1)*this.rectanglePadding;
+}
+
+Grid.prototype.GridClick = function(id)
 {
 	id = id.split(":");
 	var row = 1 * id[0];
@@ -206,7 +204,7 @@ Grid.prototype.FlipSquare = function(row, col)
 		{
 			var curRow = row + i;
 			var curCol = col + j;
-			if (curRow >= 0 && curCol >= 0 && this.grid)
+			if (curRow >= 0 && curCol >= 0 && this.grid && this.grid[curRow])
 			{
 				var rectangle = this.grid[curRow][curCol];
 				if (rectangle != null)
