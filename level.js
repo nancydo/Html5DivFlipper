@@ -32,6 +32,12 @@ Level = function(gridSize, levelNumber)
 Level.prototype.ProcessClick = function(id)
 {
 	this.currentGrid.GridClick(id);
+	this.clicks++;
+	this.UpdateClicks();
+	if (this.IsComplete())
+	{
+		CURRENT_LEVEL = new Level(GRID_SIZE, LEVEL_NUMBER++);
+	}
 }
 
 // Randomly click numClicks times and store the solution

@@ -1,6 +1,6 @@
 // Global Variables
 var CURRENT_LEVEL;
-var LEVEL_NUMBER = 5	;
+var LEVEL_NUMBER = 4;
 var RECTANGLE_SIZE = 60;
 var RECTANGLE_PADDING = 5;
 
