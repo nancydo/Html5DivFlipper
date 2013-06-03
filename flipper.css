@@ -1,19 +1,20 @@
-.rectangleOff
+.rectangleOn
 {
 	border-radius: 5px;
-	background-color: green;
+	background-color: RGB(150, 255, 160);
 	border: 1px solid black;
 	position: absolute;
 
 	transition: 0.5s;
 }
 
-.rectangleOn
+.rectangleOff
 {
 	border-radius: 5px;
-	background-color: white;
+	background-color: RGB(0, 125, 25);
 	border: 1px solid black;
 	position: absolute;
+
 	transition: 0.5s;
 }
 
