@@ -9,7 +9,7 @@ Level = function(gridSize, levelNumber)
 	this.winningGrid = new Grid(gridSize, this.baseState, RECTANGLE_SIZE / 2, RECTANGLE_PADDING / 2 + 1);
 
 	var flipperGrid = document.getElementById("flipperGrid");
-	this.currentGrid.CreateDivs(flipperGrid);
+	this.currentGrid.CreateDivs(flipperGrid, this.ProcessClick, this);
 	flipperGrid.style.width = flipperGrid.style.height = this.currentGrid.Width() + "px";
 
 	var solutionGrid = document.getElementById("solutionGrid");
@@ -29,9 +29,9 @@ Level = function(gridSize, levelNumber)
 	this.UpdateClicks();
 };
 
-Level.prototype.ProcessClick = function()
+Level.prototype.ProcessClick = function(id)
 {
-	this.currentGrid.GridClick(1);
+	this.currentGrid.GridClick(id);
 }
 
 // Randomly click numClicks times and store the solution

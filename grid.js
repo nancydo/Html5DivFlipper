@@ -21,7 +21,7 @@ Grid = function(gridSize, baseState, rectangleSize, rectanglePadding)
 	this.FlipBaseState(baseState);
 }
 
-Grid.prototype.CreateDivs = function(outerDiv)
+Grid.prototype.CreateDivs = function(outerDiv, handler, self)
 {
 	for (var row = 0; row < this.gridSize; row++)
 	{
@@ -34,8 +34,8 @@ Grid.prototype.CreateDivs = function(outerDiv)
 			div.style.width = div.style.height = this.rectangleSize + "px";
 			div.style.left = col * (this.rectangleSize + this.rectanglePadding) + "px";
 			div.style.top = row * (this.rectangleSize + this.rectanglePadding)+ "px";
-			var self = this;
-			div.onclick = function() { self.GridClick(this.id); };
+			//var self = this;
+			div.onclick =  function() { self.ProcessClick(this.id); };
 			this.grid[row][col].div = div;
 			outerDiv.appendChild(div);
 		}
