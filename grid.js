@@ -28,16 +28,24 @@ Grid.prototype.CreateDivs = function(outerDiv, handler, self)
 		for (var col = 0; col < this.gridSize; col++)
 		{
 			var rectangle = this.grid[row][col];
-			var div = document.createElement("div");
-			div.className = rectangle.on ? "rectangleOn" : "rectangleOff";
-			div.id = row + ":" + col;
-			div.style.width = div.style.height = this.rectangleSize + "px";
-			div.style.left = col * (this.rectangleSize + this.rectanglePadding) + "px";
-			div.style.top = row * (this.rectangleSize + this.rectanglePadding)+ "px";
-			//var self = this;
-			div.onclick =  function() { self.ProcessClick(this.id); };
-			this.grid[row][col].div = div;
-			outerDiv.appendChild(div);
+
+			if (this.grid[row][col].div)
+			{
+				this.grid[row][col].div.className = rectangle.on ? "rectangleOn" : "rectangleOff";
+
+			}
+			else
+			{
+				var div = document.createElement("div");
+				div.className = rectangle.on ? "rectangleOn" : "rectangleOff";
+				div.id = row + ":" + col;
+				div.style.width = div.style.height = this.rectangleSize + "px";
+				div.style.left = col * (this.rectangleSize + this.rectanglePadding) + "px";
+				div.style.top = row * (this.rectangleSize + this.rectanglePadding)+ "px";
+				div.onclick =  function() { self.ProcessClick(this.id); };
+				this.grid[row][col].div = div;
+				outerDiv.appendChild(div);
+			}
 		}
 	}
 }

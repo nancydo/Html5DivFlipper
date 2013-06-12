@@ -14,7 +14,7 @@ var GRID;
 function InitGlobals()
 {
 	BG_MUSIC.volume = 0.4;
-	BG_MUSIC.play();
+	//BG_MUSIC.play();
 	BG_MUSIC.loop = true;
 }
 
