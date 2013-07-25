@@ -4,6 +4,8 @@ var LEVEL_NUMBER = 4;
 var RECTANGLE_SIZE = 60;
 var RECTANGLE_PADDING = 5;
 
+var LEVEL_FACTORY;
+
 var DROPLET = new Audio("droplet.mp3");
 var BG_MUSIC = new Audio("happyland.mp3");
 var GRID_SIZE = 5;
@@ -16,13 +18,15 @@ function InitGlobals()
 	BG_MUSIC.volume = 0.4;
 	//BG_MUSIC.play();
 	BG_MUSIC.loop = true;
+
+	LEVEL_FACTORY = new LevelFactory();
 }
 
 // The main function called on window load
 window.onload = function()
 {
 	InitGlobals();
-	CURRENT_LEVEL = new Level(GRID_SIZE, LEVEL_NUMBER);
+	CURRENT_LEVEL = LEVEL_FACTORY.GetLevel();
 
 	// Add event handler for the reset button
 	var resetButton = document.getElementById("reset");
