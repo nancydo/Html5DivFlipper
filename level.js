@@ -4,7 +4,7 @@ var RECTANGLE_PADDING = 5;
 
 Level = function(gridSize, levelNumber)
 {
-	this.baseState = levelNumber % ENUM_BASE_STATE.NUM_PATTERNS;
+	this.baseState = (levelNumber - 1) % ENUM_BASE_STATE.NUM_PATTERNS;
 
 	if (!this.currentGrid)
 		this.currentGrid = new Grid(gridSize, this.baseState, RECTANGLE_SIZE, RECTANGLE_PADDING);
@@ -29,7 +29,7 @@ Level = function(gridSize, levelNumber)
 	this.clicks = 0;
 	this.hints = 0;
 
-	this.RandomlyClick(Math.floor(levelNumber / ENUM_BASE_STATE.NUM_PATTERNS));
+	this.RandomlyClick(1 + Math.floor(levelNumber / ENUM_BASE_STATE.NUM_PATTERNS));
 	this.UpdateClicks();
 };
 
@@ -41,7 +41,31 @@ Level.prototype.ProcessClick = function(id)
 
 	DROPLET.currentTime = 0;
 	DROPLET.play();
+
+	if (this.IsComplete())
+	{
+		LEVEL_NUMBER++;
+		CURRENT_LEVEL.NewLevel(GRID_SIZE, LEVEL_NUMBER);
+	}
 }
+
+Level.prototype.NewLevel = function(gridSize, levelNumber)
+{
+	this.baseState = levelNumber % ENUM_BASE_STATE.NUM_PATTERNS;
+	this.currentGrid.FlipBaseState(this.baseState);
+	this.winningGrid.FlipBaseState(this.baseState);
+
+	// Center the gameArea on the screen
+	var width = this.currentGrid.Width() + this.winningGrid.Width();
+	$("gameArea").style.marginTop = -width / 2 + "px";
+	$("gameArea").style.marginLeft = -width / 2 + "px";
+
+	this.clicks = 0;
+	this.hints = 0;
+
+	this.RandomlyClick(Math.floor(levelNumber / ENUM_BASE_STATE.NUM_PATTERNS));
+	this.UpdateClicks();
+};
 
 // Randomly click numClicks times and store the solution
 Level.prototype.RandomlyClick = function(numClicks)
@@ -82,6 +106,7 @@ Level.prototype.IsComplete = function()
 Level.prototype.UpdateClicks = function()
 {
 	$("clicks").textContent = "Clicks: " + this.clicks;
+	$("difficultySpan").textContent =  "Difficulty: " + this.GetDifficulty();
 };
 
 Level.prototype.GetHint = function()
@@ -91,4 +116,40 @@ Level.prototype.GetHint = function()
 
 	this.winningGrid.SetHintPoint(this.solution[this.hints]);
 	this.hints++;
+};
+
+Level.prototype.GetDifficulty = function()
+{
+	// Count the number of times a cell is flipped
+	// Sum x^2
+	var gridSize = this.winningGrid.gridSize;
+	var numFlippedArray = Create2DArray(gridSize, gridSize);
+
+	// Initialize the array with 1 or 0, depending if the winning state is flipped.
+	for (var row = 0; row < gridSize; row++)
+	{
+		for (var col = 0; col < gridSize; col++)
+		{
+			numFlippedArray[row][col] = !this.winningGrid.grid[row][col].on ? 1 : 0;
+		}
+	}
+
+	// for each click in the solution increment those places
+	for (var i = 0; i < this.solution.length; i++)
+	{
+		var point = this.solution[i];
+		IncrementSquare(numFlippedArray, gridSize, point.x, point.y);
+	}
+
+	// Calc a difficulty
+	var sum = 0;
+	for (var row = 0; row < gridSize; row++)
+	{
+		for (var col = 0; col < gridSize; col++)
+		{
+			sum += numFlippedArray[row][col] * numFlippedArray[row][col];
+		}
+	}
+
+	return sum;
 };
