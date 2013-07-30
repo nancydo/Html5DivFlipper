@@ -32,7 +32,7 @@ SolutionSet.prototype.GetClickPoints = function()
 /**************************************************
  * Randomly adds numClicks to this solution set.
  **************************************************/
-SolutionSet.prototype.Randomize(numClicks)
+SolutionSet.prototype.Randomize = function(numClicks)
 {
 	for (var i = 0; i < numClicks; i++)
 	{
@@ -54,13 +54,7 @@ SolutionSet.prototype.GetCount = function()
 
 /*************************************************
  * Enumerates solution sets.
- * 
- * 0000
- * 0000
- * 0000
- * 0000
- * maps to 0000, 0000, 0000, 0000
- * Treat this as an integer, and increment.
+ * returns null if we wrapped.
  **************************************************/
 SolutionSet.prototype.EnumerateSolutionSet = function()
 {
