@@ -2,9 +2,13 @@
  * Puzzle.js
  * Describes a puzzle
  ***************************************************/
-Puzzle = function(size)
+Puzzle = function(size, baseState, solutionSet)
 {
 	this._size = size;
+	this._playGrid = new Grid(size, baseState);
+	this._solutionGrid = new Grid(size, baseState);
+	this._baseState = baseState;
+	this._solutionSet = solutionSet;
 }
 
 /***********************************************
@@ -12,7 +16,7 @@ Puzzle = function(size)
  ***********************************************/
 Puzzle.prototype.Reset = function()
 {
-
+	this._playGrid.FlipBaseState(this._baseState);
 };
 
 /************************************************
@@ -20,7 +24,7 @@ Puzzle.prototype.Reset = function()
  ************************************************/
 Puzzle.prototype.IsComplete = function()
 {
-	return true;
+	return this._playGrid.SameConfiguration(this._solutionGrid);
 };
 
 /*************************************************
@@ -28,7 +32,7 @@ Puzzle.prototype.IsComplete = function()
  *************************************************/
 Puzzle.prototype.ProcessClick = function(row, col)
 {
-
+	this._playGrid.FlipSquare(row, col);
 };
 
 /************************************************
@@ -55,7 +59,7 @@ Puzzle.prototype.GetDifficulty = function()
  *************************************************/
 Puzzle.prototype.GetPar = function()
 {
-	return 2;
+	return this._solutionSet.GetCount();
 };
 
 /*************************************************
