@@ -18,9 +18,9 @@ SolutionSet = function(size)
 SolutionSet.prototype.GetClickPoints = function()
 {
 	var points = [];
-	for (var row = 0; row < this.size; row++)
+	for (var row = 0; row < this._size; row++)
 	{
-		for (var col = 0; col < this.size; cols++)
+		for (var col = 0; col < this._size; cols++)
 		{
 			if ((this._rows[row] & 1 << col) != 0)
 				points.push(new Point(row, col));
@@ -36,8 +36,8 @@ SolutionSet.prototype.Randomize = function(numClicks)
 {
 	for (var i = 0; i < numClicks; i++)
 	{
-		var row = Math.floor(Math.random() * this.size);
-		var col = Math.floor(Math.random() * this.size);
+		var row = Math.floor(Math.random() * this._size);
+		var col = Math.floor(Math.random() * this._size);
 
 		this._rows[row] |= 1 << col;
 	}
