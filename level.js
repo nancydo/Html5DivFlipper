@@ -22,7 +22,7 @@ Level = function(gridSize, levelNumber)
 	this.clicks = 0;
 	this.hints = 0;
 
-	this.RandomlyClick(1 + Math.floor(levelNumber / ENUM_BASE_STATE.NUM_PATTERNS));
+	this.RandomlyClick(1 + Math.floor((levelNumber - 1) / ENUM_BASE_STATE.NUM_PATTERNS));
 	this.UpdateClicks();
 };
 
