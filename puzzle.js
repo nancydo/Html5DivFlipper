@@ -51,7 +51,40 @@ Puzzle.prototype.GetSize = function()
  ************************************************/
 Puzzle.prototype.GetDifficulty = function()
 {
-	return 10;
+// Count the number of times a cell is flipped
+	// Sum x^2
+	var gridSize = this._size;
+	var numFlippedArray = Create2DArray(gridSize, gridSize);
+
+	// Initialize the array with 1 or 0, depending if the winning state is flipped.
+	for (var row = 0; row < gridSize; row++)
+	{
+		for (var col = 0; col < gridSize; col++)
+		{
+			numFlippedArray[row][col] = !this._solutionGrid.grid[row][col].on ? 1 : 0;
+		}
+	}
+
+	var solutionPoints = this._solutionSet.GetClickPoints();
+
+	// for each click in the solution increment those places
+	for (var i = 0; i < solutionPoints.length; i++)
+	{
+		var point = solutionPoints[i];
+		IncrementSquare(numFlippedArray, gridSize, point.x, point.y);
+	}
+
+	// Calc a difficulty
+	var sum = 0;
+	for (var row = 0; row < gridSize; row++)
+	{
+		for (var col = 0; col < gridSize; col++)
+		{
+			sum += numFlippedArray[row][col] * numFlippedArray[row][col];
+		}
+	}
+
+	return sum;
 };
 
 /*************************************************

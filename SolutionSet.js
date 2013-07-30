@@ -24,9 +24,9 @@ SolutionSet.prototype.GetClickPoints = function()
 	var points = [];
 	for (var row = 0; row < this._size; row++)
 	{
-		for (var col = 0; col < this._size; cols++)
+		for (var col = 0; col < this._size; col++)
 		{
-			if ((this._rows[row] & 1 << col) != 0)
+			if ((this._rows[row] & (1 << col)) != 0)
 				points.push(new Point(row, col));
 		}
 	}
