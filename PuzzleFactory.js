@@ -4,7 +4,8 @@
  ************************************************/
 PuzzleFactory = function()
 {
-	
+	this._puzzles = new Array();
+	this.Initialize();
 };
 
 /************************************************
@@ -14,7 +15,13 @@ PuzzleFactory = function()
  */
 PuzzleFactory.prototype.Initialize = function()
 {
-	// ^_^
+	var size = 4;
+	var currentSolution = new SolutionSet(size);
+	do {
+		var newestPuzzle = new Puzzle(size, 0, currentSolution);
+		this._puzzles.push(newestPuzzle);
+		currentSolution = EnumerateSolutionSets(currentSolution);
+	} while (currentSolution != null)
 };
 
 /************************************************

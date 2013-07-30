@@ -10,6 +10,10 @@ SolutionSet = function(size)
 {
 	this._size = size;
 	this._rows = new Array(size);
+
+	// Fill the solution with an 'off' state
+	for (var i = 0; i < size; i++)
+		this._rows[i] = 0;
 };
 
 /************************************************
@@ -60,6 +64,7 @@ SolutionSet.prototype.Clone = function()
 {
 	var newSet = new SolutionSet(this._size);
 	newSet._rows = this._rows.slice(0);
+	return newSet;
 };
 
 /************************************************
@@ -85,7 +90,7 @@ SolutionSet.prototype.Increment = function()
 			this._rows[row] = 0;
 
 		// On to the next row!
-		rows++;
+		row++;
 	};
 
 	// If we're still overflowing on the last row, we have gone too far.
