@@ -22,4 +22,16 @@ window.onload = function()
 	InitGlobals();
 	var levelFactory = new LevelFactory();
 	var levelManager = new LevelManager(levelFactory);
+
+	// CURRENT_LEVEL = LEVEL_FACTORY.GetLevel();
+
+	var pf = new PuzzleFactory();
+
+	// Add event handler for the reset button
+	/*var resetButton = document.getElementById("reset");
+	resetButton.onclick = function() { CURRENT_LEVEL.Reset(); }
+
+	// Add event handler for the reset button
+	var hintButton = document.getElementById("hint");
+	hintButton.onclick = function() { CURRENT_LEVEL.GetHint(); }*/
 };
