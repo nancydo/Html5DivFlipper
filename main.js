@@ -1,11 +1,7 @@
 // Global Variables
-var CURRENT_LEVEL;
 var LEVEL_NUMBER = 4;
 var RECTANGLE_SIZE = 60;
 var RECTANGLE_PADDING = 5;
-
-var LEVEL_FACTORY;
-
 var DROPLET = new Audio("droplet.mp3");
 var BG_MUSIC = new Audio("happyland.mp3");
 var GRID_SIZE = 5;
@@ -18,22 +14,24 @@ function InitGlobals()
 	BG_MUSIC.volume = 0.4;
 	//BG_MUSIC.play();
 	BG_MUSIC.loop = true;
-
-	LEVEL_FACTORY = new LevelFactory();
 }
 
 // The main function called on window load
 window.onload = function()
 {
 	InitGlobals();
-	CURRENT_LEVEL = LEVEL_FACTORY.GetLevel();
+	var levelFactory = new LevelFactory();
+	var levelManager = new LevelManager(levelFactory);
+
+
+	// CURRENT_LEVEL = LEVEL_FACTORY.GetLevel();
 
 	// Add event handler for the reset button
-	var resetButton = document.getElementById("reset");
+	/*var resetButton = document.getElementById("reset");
 	resetButton.onclick = function() { CURRENT_LEVEL.Reset(); }
 
 	// Add event handler for the reset button
 	var hintButton = document.getElementById("hint");
-	hintButton.onclick = function() { CURRENT_LEVEL.GetHint(); }
+	hintButton.onclick = function() { CURRENT_LEVEL.GetHint(); }*/
 
 };

@@ -42,7 +42,7 @@ Grid.prototype.CreateDivs = function(outerDiv, handler, self)
 				div.style.width = div.style.height = this.rectangleSize + "px";
 				div.style.left = col * (this.rectangleSize + this.rectanglePadding) + "px";
 				div.style.top = row * (this.rectangleSize + this.rectanglePadding)+ "px";
-				div.onclick =  function() { self.ProcessClick(this.id); };
+				div.onclick =  function() { self.OnClick(this.id); };
 				this.grid[row][col].div = div;
 				outerDiv.appendChild(div);
 			}

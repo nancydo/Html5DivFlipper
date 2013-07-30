@@ -3,9 +3,9 @@ LevelFactory = function()
 	//Set up locals
 };
 
-LevelFactory.prototype.GetLevel = function()
+LevelFactory.prototype.GetLevel = function(level)
 {
-	return new Level(5, 1);
+	return new Level(5, level);
 };
 
 

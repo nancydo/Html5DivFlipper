@@ -13,13 +13,6 @@ Level = function(gridSize, levelNumber)
 
 	// @Nancy: If Level is going to be the 'interface' for the backing store and the UI
 	// Maybe there should be something to turn a level object and map it to the UI
-	var flipperGrid = document.getElementById("flipperGrid");
-	this.currentGrid.CreateDivs(flipperGrid, this.ProcessClick, this);
-	flipperGrid.style.width = flipperGrid.style.height = this.currentGrid.Width() + "px";
-
-	var solutionGrid = document.getElementById("solutionGrid");
-	this.winningGrid.CreateDivs(solutionGrid);
-	solutionGrid.style.width = solutionGrid.style.height = this.winningGrid.Width() + "px";
 
 	// Center the gameArea on the screen
 	var width = this.currentGrid.Width() + this.winningGrid.Width();
@@ -41,31 +34,7 @@ Level.prototype.ProcessClick = function(id)
 
 	DROPLET.currentTime = 0;
 	DROPLET.play();
-
-	if (this.IsComplete())
-	{
-		LEVEL_NUMBER++;
-		CURRENT_LEVEL.NewLevel(GRID_SIZE, LEVEL_NUMBER);
-	}
 }
-
-Level.prototype.NewLevel = function(gridSize, levelNumber)
-{
-	this.baseState = levelNumber % ENUM_BASE_STATE.NUM_PATTERNS;
-	this.currentGrid.FlipBaseState(this.baseState);
-	this.winningGrid.FlipBaseState(this.baseState);
-
-	// Center the gameArea on the screen
-	var width = this.currentGrid.Width() + this.winningGrid.Width();
-	$("gameArea").style.marginTop = -width / 2 + "px";
-	$("gameArea").style.marginLeft = -width / 2 + "px";
-
-	this.clicks = 0;
-	this.hints = 0;
-
-	this.RandomlyClick(Math.floor(levelNumber / ENUM_BASE_STATE.NUM_PATTERNS));
-	this.UpdateClicks();
-};
 
 // Randomly click numClicks times and store the solution
 Level.prototype.RandomlyClick = function(numClicks)
