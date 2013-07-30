@@ -30,12 +30,14 @@ LevelManager.prototype.StartLevel = function()
 	this.currentLevel.winningGrid.CreateDivs(solutionGrid);
 	solutionGrid.style.width = solutionGrid.style.height = this.currentLevel.winningGrid.Width() + "px";
 
+	var currentLevel = this.currentLevel;
+
 	// Set up the buttons... this code might move
 	// This does not work right now!
 	var resetButton = document.getElementById("reset");
-	resetButton.onclick = function() { this.currentLevel.Reset(); }
+	resetButton.onclick = function() { currentLevel.Reset(); }
 
 	// Add event handler for the reset button
 	var hintButton = document.getElementById("hint");
-	hintButton.onclick = function() { this.currentLevel.GetHint(); }
+	hintButton.onclick = function() { currentLevel.GetHint(); }
 }
