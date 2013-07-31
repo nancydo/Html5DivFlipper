@@ -10,6 +10,46 @@ PuzzleFactory = function()
 	this.Initialize();
 };
 
+
+/************************************************
+ * Enumerates solution sets, calling callBack
+ ************************************************/
+function EnumerateSolutionSets(currentSet, maxClicks, depth, callBack)
+{
+	var size = currentSet.GetSize();
+	if (depth == size || maxClicks == 0)
+	{
+		callBack(currentSet);
+		return;
+	}
+
+	var bound = 1 << size;
+	for (var currentPermutation = 0; currentPermutation < bound; currentPermutation++)
+	{
+		var clicks = CountOfOnBits(currentPermutation, size);
+		if (clicks <= maxClicks)
+		{
+			currentSet._rows[depth] = currentPermutation;
+			EnumerateSolutionSets(currentSet, maxClicks - clicks, depth + 1, callBack);	
+			currentSet._rows[depth] = 0;
+		}
+	};
+};
+
+/************************************************
+ * Returns the number of 1s in the bits.
+ ************************************************/
+function CountOfOnBits(numberToCount, numberOfBits)
+{
+	var countOfOnes = 0;
+	for (var i = 0; i < numberOfBits; i++)
+	{
+		if ((numberToCount & (1 << i)) != 0)
+			countOfOnes++;
+	}
+	return countOfOnes;
+};
+
 /************************************************
  * Initialize
  * Generates a bunch of levels and stores them along
@@ -17,23 +57,22 @@ PuzzleFactory = function()
  ************************************************/
 PuzzleFactory.prototype.Initialize = function()
 {
-	// generate all the levels of size 4, on 'all on' grid.
-	var size = 4;
-	var currentSolution = new SolutionSet(size);
-	do {
-		var newestPuzzle = new Puzzle(size, 0, currentSolution);
-		this._puzzles.push(newestPuzzle);
-		currentSolution = EnumerateSolutionSets(currentSolution);
-	} while (currentSolution != null)
+	// Could maybe randomize the base state here?
 
-	// sort puzzles according to difficulty.
-	this._puzzles.sort( function(a, b) {
-		return a.GetDifficulty() - b.GetDifficulty();
-	});
+	for (var size = 4; size <= 6; size++)
+	{
+		var puzzleArray = this._puzzles;
+		var addToArrayCallback = function (currentSet)
+		{
+			var newPuzzle = new Puzzle(size, 0, currentSet.Clone());
+			puzzleArray.push(newPuzzle);
+		};
+		var currentSolution = new SolutionSet(size);
+		EnumerateSolutionSets(currentSolution, 3 /*maxClicks*/, 0/*depth*/, addToArrayCallback);
+	}
 
 	// log all of this to the log!
-	for (var i = 0; i < this._puzzles.length; i++)
-		console.log("Puzzle " + i + ": difficulty: "+ this._puzzles[i].GetDifficulty() + " #clicks: " + this._puzzles[i].GetPar());
+	console.log("Puzzles Loaded:" + this._puzzles.length);
 };
 
 /************************************************

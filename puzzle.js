@@ -9,6 +9,7 @@ Puzzle = function(size, baseState, solutionSet)
 	this._solutionGrid = new Grid(size, baseState);
 	this._baseState = baseState;
 	this._solutionSet = solutionSet;
+	this._difficulty = this.GetDifficulty();
 }
 
 /***********************************************
@@ -51,7 +52,11 @@ Puzzle.prototype.GetSize = function()
  ************************************************/
 Puzzle.prototype.GetDifficulty = function()
 {
-// Count the number of times a cell is flipped
+	// Cache the difficulty.
+	if (this._difficulty != null)
+		return this._difficulty;
+	
+	// Count the number of times a cell is flipped
 	// Sum x^2
 	var gridSize = this._size;
 	var numFlippedArray = Create2DArray(gridSize, gridSize);
