@@ -71,12 +71,10 @@ PuzzleFactory.prototype.Initialize = function()
 		EnumerateSolutionSets(currentSolution, 3 /*maxClicks*/, 0/*depth*/, addToArrayCallback);
 	}
 
-	var puzz = this._puzzles[9347];
-	puzz._difficulty = 31415;
-	var json = JSON.stringify(puzz.GetSimpleStruct());
-	var lvl = this.CreatePuzzleFromSimpleStruct(JSON.parse(json));
-
-	alert();
+	//var puzz = this._puzzles[9347];
+	//puzz._difficulty = 31415;
+	//var json = JSON.stringify(puzz.GetSimpleStruct());
+	//var lvl = this.CreatePuzzleFromSimpleStruct(JSON.parse(json));
 
 	// log all of this to the log!
 	console.log("Puzzles Loaded:" + this._puzzles.length);
