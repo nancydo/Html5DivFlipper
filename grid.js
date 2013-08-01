@@ -1,5 +1,5 @@
 // Grid Globals
-var ENUM_BASE_STATE = { ALL_ON: 0, OUTLINE: 1, BACKSLASH: 2, DIAMOND: 3, NUM_PATTERNS: 4};
+var ENUM_BASE_STATE = { ALL_ON: 0, OUTLINE: 1, BACKSLASH: 2, DIAMOND: 3, CHECKERBOARD: 4, NUM_PATTERNS: 5};
 
 // Grid Class
 Grid = function(gridSize, baseState, rectangleSize, rectanglePadding)
@@ -81,8 +81,22 @@ Grid.prototype.FlipBaseState = function(baseState)
 
 	if (baseState == ENUM_BASE_STATE.DIAMOND)
 		this.SetupBaseDiamond();
+
+	if (baseState == ENUM_BASE_STATE.CHECKERBOARD)
+		this.SetupBaseCheckerBoard();
 };
 
+Grid.prototype.SetupBaseCheckerBoard = function()
+{
+	for (var row = 0; row < this.gridSize; row++)
+	{
+		for (var col = 0; col < this.gridSize; col++)
+		{
+			if ((row + col) % 2 == 0)
+				this.grid[row][col].EnsureOff();
+		}
+	}
+}
 
 // Ensures all rectangles are on.
 Grid.prototype.SetupAllOn = function()
@@ -92,7 +106,6 @@ Grid.prototype.SetupAllOn = function()
 		for (var col = 0; col < this.gridSize; col++)
 		{
 			this.grid[row][col].EnsureOn();
-
 		}
 	}
 }
