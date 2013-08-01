@@ -9,7 +9,6 @@ Puzzle = function(size, baseState, solutionSet)
 	this._solutionGrid = new Grid(size, baseState);
 	this._baseState = baseState;
 	this._solutionSet = solutionSet;
-	this._difficulty = this.GetDifficulty();
 }
 
 /***********************************************
@@ -55,7 +54,7 @@ Puzzle.prototype.GetDifficulty = function()
 	// Cache the difficulty.
 	if (this._difficulty != null)
 		return this._difficulty;
-	
+
 	// Count the number of times a cell is flipped
 	// Sum x^2
 	var gridSize = this._size;
@@ -114,4 +113,18 @@ Puzzle.prototype.GetPlayGrid = function()
 Puzzle.prototype.GetSolutionGrid = function()
 {
 	return this._solutionGrid;
+};
+
+/*************************************************
+ * Returns a simple struct of this level for saving.
+ *************************************************/
+Puzzle.prototype.GetSimpleStruct = function()
+{
+	var simpleStruct = {};
+	simpleStruct.BaseState = this._baseState;
+	simpleStruct.Size = this._size;
+	simpleStruct.Difficulty = this._difficulty;
+	simpleStruct.SolutionSetRows = this._solutionSet._rows.slice(0);
+
+	return simpleStruct;
 };

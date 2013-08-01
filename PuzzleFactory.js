@@ -71,6 +71,13 @@ PuzzleFactory.prototype.Initialize = function()
 		EnumerateSolutionSets(currentSolution, 3 /*maxClicks*/, 0/*depth*/, addToArrayCallback);
 	}
 
+	var puzz = this._puzzles[9347];
+	puzz._difficulty = 31415;
+	var json = JSON.stringify(puzz.GetSimpleStruct());
+	var lvl = this.CreatePuzzleFromSimpleStruct(JSON.parse(json));
+
+	alert();
+
 	// log all of this to the log!
 	console.log("Puzzles Loaded:" + this._puzzles.length);
 };
@@ -79,10 +86,22 @@ PuzzleFactory.prototype.Initialize = function()
  * GetPuzzle
  * Returns a level of approximate difficulty.
  ************************************************/
-LevelFactory.prototype.GetPuzzle = function(difficulty)
+PuzzleFactory.prototype.GetPuzzle = function(difficulty)
 {
 	var solutionSet = new SolutionSet(5);
 	solutionSet.Randomize(2);
 
 	return new Puzzle(5 /*size*/, ENUM_BASE_STATE.DIAMOND, solutionSet);
+};
+
+
+/************************************************
+ * Creates a puzzle from a simple struct
+ ************************************************/
+PuzzleFactory.prototype.CreatePuzzleFromSimpleStruct = function(simpleStruct)
+{
+	var newSolution = new SolutionSet(simpleStruct.Size);
+	newSolution._rows = simpleStruct.SolutionSetRows.slice(0);
+
+	return new Puzzle(simpleStruct.Size, simpleStruct.BaseState, newSolution);
 };
