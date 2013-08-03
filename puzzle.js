@@ -9,8 +9,15 @@ Puzzle = function(size, baseState, solutionSet)
 	this._solutionGrid = new Grid(size, baseState, RECTANGLE_SIZE, RECTANGLE_PADDING);
 	this._baseState = baseState;
 	this._solutionSet = solutionSet;
+	this.FlipSolution();
+};
 
-	var clickPoints = solutionSet.GetClickPoints();
+/************************************************
+ * Flips all the squares around solution click points.
+ ************************************************/
+Puzzle.prototype.FlipSolution = function()
+{
+	var clickPoints = this._solutionSet.GetClickPoints();
 	for (var i = 0; i < clickPoints.length; i++)
 	{
 		var point = clickPoints[i];
@@ -24,6 +31,7 @@ Puzzle = function(size, baseState, solutionSet)
 Puzzle.prototype.Reset = function()
 {
 	this._playGrid.FlipBaseState(this._baseState);
+	this.FlipSolution();
 };
 
 /************************************************

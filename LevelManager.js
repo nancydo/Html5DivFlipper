@@ -52,13 +52,11 @@ LevelManager.prototype.StartLevel = function()
 	flipperGrid.style.width = flipperGrid.style.height = this._currentPuzzle.GetPlayGrid().Width() + "px";
 	solutionGrid.style.width = solutionGrid.style.height = this._currentPuzzle.GetSolutionGrid().Width() + "px";
 
-	$("gameMenu").style.marginLeft = width + "px";
-
-
+	var currentPuzzle = this._currentPuzzle;
 	var resetButton = document.getElementById("reset");
-	resetButton.onclick = function() { this._currentPuzzle.Reset(); }
+	resetButton.onclick = function() { currentPuzzle.Reset(); }
 
 	// Add event handler for the reset button
 	var hintButton = document.getElementById("hint");
-	hintButton.onclick = function() { this._currentPuzzle.GetHint(); }
+	hintButton.onclick = function() { currentPuzzle.GetHint(); }
 }
