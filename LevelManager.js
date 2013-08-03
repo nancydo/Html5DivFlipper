@@ -40,13 +40,17 @@ LevelManager.prototype.StartLevel = function()
 	this._currentPuzzle.GetPlayGrid().CreateDivs(flipperGrid, this.OnClick, this);
 	this._currentPuzzle.GetSolutionGrid().CreateDivs(solutionGrid);
 	
-
+	// How many pixels to put between the playing board and the solution board.
 	var hackySpacingBetweenGrids = 100;
-	// Center the gameArea on the screen
-	var width = this._currentPuzzle.GetPlayGrid().Width() + this._currentPuzzle.GetSolutionGrid().Width() + hackySpacingBetweenGrids;
-	$("gameArea").style.marginTop = -width / 2 + "px";
-	$("gameArea").style.marginLeft = -width / 2 + "px";
-	$("gameArea").style.width = width + "px";
+	
+	// Center the game area on the screen.
+	var gameAreaWidth = this._currentPuzzle.GetPlayGrid().Width() + this._currentPuzzle.GetSolutionGrid().Width() + hackySpacingBetweenGrids;
+	$("gameArea").style.marginLeft = -gameAreaWidth / 2 + "px";
+	$("gameArea").style.width = gameAreaWidth + "px";
+
+	var gameAreaHeight = this._currentPuzzle.GetPlayGrid().Width();
+	$("gameArea").style.height = gameAreaHeight + "px";
+	$("gameArea").style.marginTop = -gameAreaHeight / 2 + "px";
 
 	// Set the sizes of the areas.
 	flipperGrid.style.width = flipperGrid.style.height = this._currentPuzzle.GetPlayGrid().Width() + "px";
