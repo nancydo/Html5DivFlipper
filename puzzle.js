@@ -5,10 +5,17 @@
 Puzzle = function(size, baseState, solutionSet)
 {
 	this._size = size;
-	this._playGrid = new Grid(size, baseState);
-	this._solutionGrid = new Grid(size, baseState);
+	this._playGrid = new Grid(size, baseState, RECTANGLE_SIZE, RECTANGLE_PADDING);
+	this._solutionGrid = new Grid(size, baseState, RECTANGLE_SIZE, RECTANGLE_PADDING);
 	this._baseState = baseState;
 	this._solutionSet = solutionSet;
+
+	var clickPoints = solutionSet.GetClickPoints();
+	for (var i = 0; i < clickPoints.length; i++)
+	{
+		var point = clickPoints[i];
+		this._playGrid.FlipSquare(point.x, point.y);
+	}
 }
 
 /***********************************************
@@ -30,9 +37,9 @@ Puzzle.prototype.IsComplete = function()
 /*************************************************
  * Instructs this puzzle to 'click' at position row/col.
  *************************************************/
-Puzzle.prototype.ProcessClick = function(row, col)
+Puzzle.prototype.ProcessClick = function(id)
 {
-	this._playGrid.FlipSquare(row, col);
+	this._playGrid.GridClick(id);
 };
 
 /************************************************
@@ -88,6 +95,7 @@ Puzzle.prototype.GetDifficulty = function()
 		}
 	}
 
+	this._difficulty = sum;
 	return sum;
 };
 
@@ -121,10 +129,10 @@ Puzzle.prototype.GetSolutionGrid = function()
 Puzzle.prototype.GetSimpleStruct = function()
 {
 	var simpleStruct = {};
-	simpleStruct.BaseState = this._baseState;
-	simpleStruct.Size = this._size;
-	simpleStruct.Difficulty = this._difficulty;
-	simpleStruct.SolutionSetRows = this._solutionSet._rows.slice(0);
+	simpleStruct.b = this._baseState;
+	simpleStruct.s = this._size;
+	simpleStruct.d = this._difficulty;
+	simpleStruct.a = this._solutionSet._rows.slice(0);
 
 	return simpleStruct;
 };

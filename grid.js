@@ -29,30 +29,34 @@ Grid.prototype.CreateDivs = function(outerDiv, handler, self)
 		{
 			var rectangle = this.grid[row][col];
 
-			if (this.grid[row][col].div)
-			{
-				this.grid[row][col].div.className = rectangle.on ? "rectangleOn" : "rectangleOff";
-
-			}
-			else
-			{
-				var div = document.createElement("div");
-				div.className = rectangle.on ? "rectangleOn" : "rectangleOff";
-				div.id = row + ":" + col;
-				div.style.width = div.style.height = this.rectangleSize + "px";
-				div.style.left = col * (this.rectangleSize + this.rectanglePadding) + "px";
-				div.style.top = row * (this.rectangleSize + this.rectanglePadding)+ "px";
-				div.onclick =  function() { self.OnClick(this.id); };
-				this.grid[row][col].div = div;
-				outerDiv.appendChild(div);
-			}
+			var div = document.createElement("div");
+			div.className = rectangle.on ? "rectangleOn" : "rectangleOff";
+			div.id = row + ":" + col;
+			div.style.width = div.style.height = this.rectangleSize + "px";
+			div.style.left = col * (this.rectangleSize + this.rectanglePadding) + "px";
+			div.style.top = row * (this.rectangleSize + this.rectanglePadding)+ "px";
+			div.onclick =  function() { self.OnClick(this.id); };
+			this.grid[row][col].div = div;
+			outerDiv.appendChild(div);
 		}
 	}
-}
+};
+
+Grid.prototype.DestroyDivs = function(outerDiv)
+{
+	for (var row = 0; row < this.gridSize; row++)
+	{
+		for (var col = 0; col < this.gridSize; col++)
+		{
+			var rectangle = this.grid[row][col];
+			outerDiv.removeChild(rectangle.div);
+		}
+	}
+};
 
 Grid.prototype.Width = function()
 {
-	return this.rectangleSize * GRID_SIZE + (GRID_SIZE-1)*this.rectanglePadding;
+	return this.rectangleSize * this.gridSize + (this.gridSize - 1) * this.rectanglePadding;
 }
 
 Grid.prototype.GridClick = function(id)

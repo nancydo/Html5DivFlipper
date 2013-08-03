@@ -20,12 +20,12 @@ function InitGlobals()
 window.onload = function()
 {
 	InitGlobals();
-	var levelFactory = new LevelFactory();
-	var levelManager = new LevelManager(levelFactory);
+	var puzzleFactory = new PuzzleFactory();
+	var levelManager = new LevelManager(puzzleFactory);
 
 	// CURRENT_LEVEL = LEVEL_FACTORY.GetLevel();
 
-	var pf = new PuzzleFactory();
+	
 
 	// Add event handler for the reset button
 	/*var resetButton = document.getElementById("reset");

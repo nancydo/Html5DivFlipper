@@ -57,25 +57,18 @@ function CountOfOnBits(numberToCount, numberOfBits)
  ************************************************/
 PuzzleFactory.prototype.Initialize = function()
 {
-	// Could maybe randomize the base state here?
-
-	for (var size = 4; size <= 6; size++)
+	for (var clicks = 1; clicks <= 5; clicks++)
 	{
-		var puzzleArray = this._puzzles;
-		var addToArrayCallback = function (currentSet)
+		for (var solutions = 0; solutions < 1000; solutions++)
 		{
-			var newPuzzle = new Puzzle(size, 0, currentSet.Clone());
-			puzzleArray.push(newPuzzle);
-		};
-		var currentSolution = new SolutionSet(size);
-		EnumerateSolutionSets(currentSolution, 3 /*maxClicks*/, 0/*depth*/, addToArrayCallback);
+			var size = Math.floor(Math.random() * 3) + 4;
+			var baseState = Math.floor(Math.random() * 5);
+			var solutionSet = new SolutionSet(size);
+			solutionSet.Randomize(clicks);
+
+			this._puzzles.push(new Puzzle(size, baseState, solutionSet));
+		}
 	}
-
-	//var puzz = this._puzzles[9347];
-	//puzz._difficulty = 31415;
-	//var json = JSON.stringify(puzz.GetSimpleStruct());
-	//var lvl = this.CreatePuzzleFromSimpleStruct(JSON.parse(json));
-
 	// log all of this to the log!
 	console.log("Puzzles Loaded:" + this._puzzles.length);
 };
@@ -86,10 +79,7 @@ PuzzleFactory.prototype.Initialize = function()
  ************************************************/
 PuzzleFactory.prototype.GetPuzzle = function(difficulty)
 {
-	var solutionSet = new SolutionSet(5);
-	solutionSet.Randomize(2);
-
-	return new Puzzle(5 /*size*/, ENUM_BASE_STATE.DIAMOND, solutionSet);
+	return this._puzzles[difficulty];
 };
 
 
@@ -98,8 +88,8 @@ PuzzleFactory.prototype.GetPuzzle = function(difficulty)
  ************************************************/
 PuzzleFactory.prototype.CreatePuzzleFromSimpleStruct = function(simpleStruct)
 {
-	var newSolution = new SolutionSet(simpleStruct.Size);
-	newSolution._rows = simpleStruct.SolutionSetRows.slice(0);
+	var newSolution = new SolutionSet(simpleStruct.s);
+	newSolution._rows = simpleStruct.a.slice(0);
 
-	return new Puzzle(simpleStruct.Size, simpleStruct.BaseState, newSolution);
+	return new Puzzle(simpleStruct.s, simpleStruct.b, newSolution);
 };

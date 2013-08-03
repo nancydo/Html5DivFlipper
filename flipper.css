@@ -39,11 +39,12 @@
 
 #flipperBoard
 {
-	float: left;
+	position: absolute;
+	left: 0px;
 }
 
 #gameMenu
 {
-	position: fixed;
-	margin-left: 350px;
+	position: absolute;
+	right: 0px;
 }
