@@ -56,6 +56,8 @@ LevelManager.prototype.StartLevel = function()
 	flipperGrid.style.width = flipperGrid.style.height = this._currentPuzzle.GetPlayGrid().Width() + "px";
 	solutionGrid.style.width = solutionGrid.style.height = this._currentPuzzle.GetSolutionGrid().Width() + "px";
 
+	$("par").textContent = "Par: " + this._currentPuzzle._solutionSet.GetClickPoints().length;
+
 	var currentPuzzle = this._currentPuzzle;
 	var resetButton = document.getElementById("reset");
 	resetButton.onclick = function() { currentPuzzle.Reset(); }
