@@ -75,9 +75,6 @@ PuzzleFactory.prototype.Initialize = function()
 	 { 
 	 	return a.GetDifficulty() - b.GetDifficulty();
 	 });
-
-	// log all of this to the log!
-	console.log("Puzzles Loaded:" + this._puzzles.length);
 };
 
 /************************************************
@@ -89,7 +86,7 @@ PuzzleFactory.prototype.GetPuzzle = function(difficulty)
 	for (var i = 0; i < this._puzzles.length; i++)
 		if (this._puzzles[i].GetDifficulty() >= difficulty)
 			return this._puzzles[i];
-		
+
 	alert("you win!")
 	return this._puzzles[1];
 };
