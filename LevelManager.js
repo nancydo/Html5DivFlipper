@@ -13,6 +13,10 @@ LevelManager.prototype.OnClick = function(id)
 	// TODO: Get Row and Column from id
 	var row = 1;
 	var col = 2;
+	
+	DROPLET.currentTime = 0;
+	DROPLET.play();
+
 	this._currentPuzzle.ProcessClick(id);
 	if (this._currentPuzzle.IsComplete())
 	{
