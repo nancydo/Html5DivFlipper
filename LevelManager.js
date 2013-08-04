@@ -61,6 +61,7 @@ LevelManager.prototype.StartLevel = function()
 	solutionGrid.style.width = solutionGrid.style.height = this._currentPuzzle.GetSolutionGrid().Width() + "px";
 
 	$("par").textContent = "Par: " + this._currentPuzzle._solutionSet.GetClickPoints().length;
+	$("difficultySpan").textContent = "Rating: " + this._currentPuzzle.GetDifficulty();
 
 	var currentPuzzle = this._currentPuzzle;
 	var resetButton = document.getElementById("reset");
