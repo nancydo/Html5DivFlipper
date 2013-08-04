@@ -69,6 +69,13 @@ PuzzleFactory.prototype.Initialize = function()
 			this._puzzles.push(new Puzzle(size, baseState, solutionSet));
 		}
 	}
+
+	// sort the puzzles based on difficulty.
+	this._puzzles.sort( function(a, b)
+	 { 
+	 	return a.GetDifficulty() - b.GetDifficulty();
+	 });
+
 	// log all of this to the log!
 	console.log("Puzzles Loaded:" + this._puzzles.length);
 };
@@ -79,7 +86,12 @@ PuzzleFactory.prototype.Initialize = function()
  ************************************************/
 PuzzleFactory.prototype.GetPuzzle = function(difficulty)
 {
-	return this._puzzles[difficulty];
+	for (var i = 0; i < this._puzzles.length; i++)
+		if (this._puzzles[i].GetDifficulty() >= difficulty)
+			return this._puzzles[i];
+		
+	alert("you win!")
+	return this._puzzles[1];
 };
 
 

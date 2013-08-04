@@ -16,7 +16,7 @@ LevelManager.prototype.OnClick = function(id)
 	this._currentPuzzle.ProcessClick(id);
 	if (this._currentPuzzle.IsComplete())
 	{
-		this._puzzleNumber++;
+		this._puzzleNumber = this._currentPuzzle.GetDifficulty() + 1;
 		this.StartLevel();
 	}
 };
