@@ -25,6 +25,15 @@ LevelManager.prototype.OnClick = function(id)
 	}
 };
 
+/************************************************
+ * Completes the level and starts the next one.
+ ************************************************/
+LevelManager.prototype.LevelComplete= function()
+{
+	this._puzzleNumber = this._currentPuzzle.GetDifficulty() + 1;
+	this.StartLevel();
+};
+
 LevelManager.prototype.StartLevel = function()
 {
 	var flipperGrid = document.getElementById("flipperGrid");
@@ -67,7 +76,13 @@ LevelManager.prototype.StartLevel = function()
 	var resetButton = document.getElementById("reset");
 	resetButton.onclick = function() { currentPuzzle.Reset(); }
 
-	// Add event handler for the reset button
+	// Add event handler for the hint button
 	var hintButton = document.getElementById("hint");
 	hintButton.onclick = function() { currentPuzzle.GetHint(); }
-}
+
+	// probably doesn't belong here,
+	// Add event handler for the skip button
+	var skipButton = document.getElementById("skipButton");
+	var myself = this;
+	skipButton.onclick = function() { myself.LevelComplete(); }
+};

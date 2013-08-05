@@ -99,15 +99,25 @@ Puzzle.prototype.GetDifficulty = function()
 	// based on level bias.
 	// Outline levels prove to be really easy, and have a lot of clicked cells.
 	// so lets count them as half as important.
-	var boardWeight = 1;
+	var boardWeightOn = 1;
+	var boardWeightOff = 0;
+
+	// THESE ARE VERY ARBITRARY, AND BECAUSE I SAID SO.
 	if (this._baseState == ENUM_BASE_STATE.OUTLINE)
-		boardWeight = 0.5;
+	{
+		boardWeightOn = 0.5;
+	} 
+	else if (this._baseState == ENUM_BASE_STATE.CHECKERBOARD)
+	{
+		boardWeightOn = 1;
+		boardWeightOff = 0.5;
+	}
 
 	for (var row = 0; row < gridSize; row++)
 	{
 		for (var col = 0; col < gridSize; col++)
 		{
-			numFlippedArray[row][col] = !this._solutionGrid.grid[row][col].on ? boardWeight : 0;
+			numFlippedArray[row][col] = !this._solutionGrid.grid[row][col].on ? boardWeightOn : boardWeightOff;
 		}
 	}
 
