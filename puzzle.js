@@ -62,30 +62,7 @@ Puzzle.prototype.GetSize = function()
 };
 
 /************************************************
- * Returns the number of zeros neighbouring this cell.
- ************************************************/
-function CountNeighbouringZeros(array, size, row, col)
-{
-	var sum = 0;
-	for (var i = -1; i <= 1; i++)
-	{
-		for (var j = -1; j <= 1; j++)
-		{
-			var curRow = row + i;
-			var curCol = col + j;
-			if (0 <= curRow && curRow < size &&
-				0 <= curCol && curCol < size)
-			{
-				if (array[curRow][curCol] == 0)
-					sum++				
-			}
-		}
-	}
-	return sum;
-};
-
-/************************************************
- * Incremends a square around row col.
+ * Increments a square around row col.
  ************************************************/
 function IncrementSquare(array, size, row, col)
 {
@@ -103,6 +80,7 @@ function IncrementSquare(array, size, row, col)
 		}
 	}
 };
+
 /************************************************
  * Returns the difficulty heuristic of this level.
  ************************************************/
@@ -116,25 +94,20 @@ Puzzle.prototype.GetDifficulty = function()
 	// Sum x^2
 	var gridSize = this._size;
 	var numFlippedArray = Create2DArray(gridSize, gridSize);
-	var slotsThatMatterArray = Create2DArray(gridSize, gridSize);
 
-	// Initialize the array with 1 or 0, depending if the winning state is flipped.
+	// Initialize our calculation grid with values 
+	// based on level bias.
+	// Outline levels prove to be really easy, and have a lot of clicked cells.
+	// so lets count them as half as important.
+	var boardWeight = 1;
+	if (this._baseState == ENUM_BASE_STATE.OUTLINE)
+		boardWeight = 0.5;
+
 	for (var row = 0; row < gridSize; row++)
 	{
 		for (var col = 0; col < gridSize; col++)
 		{
-			numFlippedArray[row][col] = !this._solutionGrid.grid[row][col].on ? 1 : 0;
-			slotsThatMatterArray[row][col] = 0;
-		}
-	}
-
-	// Fill the base array with the number of neighbouring zeros.
-	for (var row = 0; row < gridSize; row++)
-	{
-		for (var col = 0; col < gridSize; col++)
-		{
-			if (numFlippedArray[row][col] != 0)
-				numFlippedArray[row][col] = CountNeighbouringZeros(numFlippedArray, gridSize, row, col);
+			numFlippedArray[row][col] = !this._solutionGrid.grid[row][col].on ? boardWeight : 0;
 		}
 	}
 
@@ -145,7 +118,6 @@ Puzzle.prototype.GetDifficulty = function()
 	{
 		var point = solutionPoints[i];
 		IncrementSquare(numFlippedArray, gridSize, point.x, point.y);
-		IncrementSquare(slotsThatMatterArray, gridSize, point.x, point.y);
 	}
 
 	// Calc a difficulty
@@ -155,8 +127,7 @@ Puzzle.prototype.GetDifficulty = function()
 		for (var col = 0; col < gridSize; col++)
 		{
 			// Square the value in the slot
-			if (slotsThatMatterArray[row][col] != 0)
-				sum += Math.pow(numFlippedArray[row][col], 2);
+			sum += Math.pow(numFlippedArray[row][col], 2);
 		}
 	}
 
