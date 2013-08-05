@@ -62,6 +62,48 @@ Puzzle.prototype.GetSize = function()
 };
 
 /************************************************
+ * Returns the number of zeros neighbouring this cell.
+ ************************************************/
+function CountNeighbouringZeros(array, size, row, col)
+{
+	var sum = 0;
+	for (var i = -1; i <= 1; i++)
+	{
+		for (var j = -1; j <= 1; j++)
+		{
+			var curRow = row + i;
+			var curCol = col + j;
+			if (0 <= curRow && curRow < size &&
+				0 <= curCol && curCol < size)
+			{
+				if (array[curRow][curCol] == 0)
+					sum++				
+			}
+		}
+	}
+	return sum;
+};
+
+/************************************************
+ * Incremends a square around row col.
+ ************************************************/
+function IncrementSquare(array, size, row, col)
+{
+	for (var i = -1; i <= 1; i++)
+	{
+		for (var j = -1; j <= 1; j++)
+		{
+			var curRow = row + i;
+			var curCol = col + j;
+			if (0 <= curRow && curRow < size &&
+				0 <= curCol && curCol < size)
+			{
+				array[curRow][curCol]++;
+			}
+		}
+	}
+};
+/************************************************
  * Returns the difficulty heuristic of this level.
  ************************************************/
 Puzzle.prototype.GetDifficulty = function()
@@ -74,25 +116,25 @@ Puzzle.prototype.GetDifficulty = function()
 	// Sum x^2
 	var gridSize = this._size;
 	var numFlippedArray = Create2DArray(gridSize, gridSize);
-
-
-	// Let's put a little bias levels
-	// Outlines don't really seem that much harder than the all off grid
-	// but due to the algorithm of counting flipped squares, they get really high ranking.
-	var boardWeight = 1;
-	if (this._baseState == ENUM_BASE_STATE.OUTLINE)
-		boardWeight = 0.5;
-
-	// maybe tweak this in terms of board size rather than base state?
-	//4x4 outlines and 4x4 checker board are still tricky
-
+	var slotsThatMatterArray = Create2DArray(gridSize, gridSize);
 
 	// Initialize the array with 1 or 0, depending if the winning state is flipped.
 	for (var row = 0; row < gridSize; row++)
 	{
 		for (var col = 0; col < gridSize; col++)
 		{
-			numFlippedArray[row][col] = !this._solutionGrid.grid[row][col].on ? boardWeight : 0;
+			numFlippedArray[row][col] = !this._solutionGrid.grid[row][col].on ? 1 : 0;
+			slotsThatMatterArray[row][col] = 0;
+		}
+	}
+
+	// Fill the base array with the number of neighbouring zeros.
+	for (var row = 0; row < gridSize; row++)
+	{
+		for (var col = 0; col < gridSize; col++)
+		{
+			if (numFlippedArray != 0)
+				numFlippedArray[row][col] = CountNeighbouringZeros(numFlippedArray, gridSize, row, col);
 		}
 	}
 
@@ -103,6 +145,7 @@ Puzzle.prototype.GetDifficulty = function()
 	{
 		var point = solutionPoints[i];
 		IncrementSquare(numFlippedArray, gridSize, point.x, point.y);
+		IncrementSquare(slotsThatMatterArray, gridSize, point.x, point.y);
 	}
 
 	// Calc a difficulty
@@ -112,7 +155,8 @@ Puzzle.prototype.GetDifficulty = function()
 		for (var col = 0; col < gridSize; col++)
 		{
 			// Square the value in the slot
-			sum += Math.pow(numFlippedArray[row][col], 2);
+			if (slotsThatMatterArray[row][col] != 0)
+				sum += Math.pow(numFlippedArray[row][col], 2);
 		}
 	}
 
