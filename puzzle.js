@@ -133,7 +133,7 @@ Puzzle.prototype.GetDifficulty = function()
 	{
 		for (var col = 0; col < gridSize; col++)
 		{
-			if (numFlippedArray != 0)
+			if (numFlippedArray[row][col] != 0)
 				numFlippedArray[row][col] = CountNeighbouringZeros(numFlippedArray, gridSize, row, col);
 		}
 	}
