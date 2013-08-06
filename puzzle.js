@@ -105,12 +105,16 @@ Puzzle.prototype.GetDifficulty = function()
 	// THESE ARE VERY ARBITRARY, AND BECAUSE I SAID SO.
 	if (this._baseState == ENUM_BASE_STATE.OUTLINE)
 	{
-		boardWeightOn = 0.5;
+		// big boards shouldn't shouldn't value outlines so hard.
+		// scale down the weight on each base cell by the size.
+		boardWeightOn = 4 / gridSize;
 	} 
 	else if (this._baseState == ENUM_BASE_STATE.CHECKERBOARD)
 	{
+		// checkerboard is really hard... and even harder on small boards.
+		// give weight to the off pieces too, except on large boards.
 		boardWeightOn = 1;
-		boardWeightOff = 0.5;
+		boardWeightOff = 1 - gridSize / 6;
 	}
 
 	for (var row = 0; row < gridSize; row++)

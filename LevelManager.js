@@ -10,25 +10,18 @@ function LevelManager(puzzleFactory)
 
 LevelManager.prototype.OnClick = function(id)
 {
-	// TODO: Get Row and Column from id
-	var row = 1;
-	var col = 2;
-	
 	DROPLET.currentTime = 0;
 	DROPLET.play();
 
 	this._currentPuzzle.ProcessClick(id);
 	if (this._currentPuzzle.IsComplete())
-	{
-		this._puzzleNumber = this._currentPuzzle.GetDifficulty() + 1;
-		this.StartLevel();
-	}
+		this.LevelComplete();
 };
 
 /************************************************
  * Completes the level and starts the next one.
  ************************************************/
-LevelManager.prototype.LevelComplete= function()
+LevelManager.prototype.LevelComplete = function()
 {
 	this._puzzleNumber = this._currentPuzzle.GetDifficulty() + 1;
 	this.StartLevel();

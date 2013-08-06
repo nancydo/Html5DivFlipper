@@ -91,7 +91,6 @@ PuzzleFactory.prototype.GetPuzzle = function(difficulty)
 	return this._puzzles[1];
 };
 
-
 /************************************************
  * Creates a puzzle from a simple struct
  ************************************************/
