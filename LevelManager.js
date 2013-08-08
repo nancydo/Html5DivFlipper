@@ -4,14 +4,14 @@ function LevelManager(puzzleFactory)
 	this._puzzleFactory = puzzleFactory;
 	this._puzzleNumber = 1;
 	this._currentPuzzle = null;
-
+	
 	this.StartLevel();
+	SoundManager.Play("happyland");
 };
 
 LevelManager.prototype.OnClick = function(id)
 {
-	DROPLET.currentTime = 0;
-	DROPLET.play();
+	SoundManager.Play("boimp");
 
 	this._currentPuzzle.ProcessClick(id);
 	if (this._currentPuzzle.IsComplete())
@@ -25,6 +25,7 @@ LevelManager.prototype.LevelComplete = function()
 {
 	this._puzzleNumber = this._currentPuzzle.GetDifficulty() + 1;
 	this.StartLevel();
+	SoundManager.Play("complete");
 };
 
 LevelManager.prototype.StartLevel = function()
