@@ -14,13 +14,10 @@ function InitGlobals()
 	SoundManager.SetEffectVolume(0.6);
 }
 
-
-
 // The main function called on window load
 window.onload = function()
 {
 	InitGlobals();
-	
-	var puzzleFactory = new PuzzleFactory();
-	var levelManager = new LevelManager(puzzleFactory);
+
+	var levelManager = new LevelManager();
 };

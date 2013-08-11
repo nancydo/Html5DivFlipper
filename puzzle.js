@@ -1,3 +1,7 @@
+var RECTANGLE_SIZE = 60;
+var RECTANGLE_PADDING = 5;
+
+
 /***************************************************
  * Puzzle.js
  * Describes a puzzle

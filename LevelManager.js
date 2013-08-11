@@ -1,13 +1,34 @@
-function LevelManager(puzzleFactory)
+function LevelManager()
 {
-	//Set up locals
-	this._puzzleFactory = puzzleFactory;
+	this._puzzleFactory = new PuzzleFactory();
 	this._puzzleNumber = 1;
 	this._currentPuzzle = null;
+
+	var _self = this;
+	var updateClock = function(timeRemaining)
+	{
+		_self.UpdateClock(timeRemaining);
+	};
+
+	var timeOver = function()
+	{
+		_self.GameOver();
+	};
+
+	this._stopWatch = new StopWatch(1000, updateClock, timeOver	);
+	this._stopWatch.SetTimeRemaining(10000);
+	this._stopWatch.Start();
 	
 	this.StartLevel();
 	SoundManager.Play("happyland");
 };
+
+LevelManager.prototype.UpdateClock = function(timeRemaining)
+{
+	timeRemaining = timeRemaining / 1000.0;
+	var gameClock = document.getElementById("gameClock");
+	gameClock.textContent = timeRemaining;
+}
 
 LevelManager.prototype.OnClick = function(id)
 {
@@ -19,12 +40,35 @@ LevelManager.prototype.OnClick = function(id)
 };
 
 /************************************************
+ * Ends the current LevelManager and cleans up.
+ ************************************************/
+LevelManager.prototype.GameOver = function()
+{
+	var flipperGrid = document.getElementById("flipperGrid");
+	var solutionGrid = document.getElementById("solutionGrid");
+
+	// Destroy the divs if we have any.
+	if (this._currentPuzzle != null)
+	{
+		this._currentPuzzle.GetPlayGrid().DestroyDivs(flipperGrid);
+		this._currentPuzzle.GetSolutionGrid().DestroyDivs(solutionGrid);
+	}
+
+	var flipperGrid = document.getElementById("flipperGrid");
+	flipperGrid.textContent = "GG";
+	SoundManager.Pause("happyland");
+};
+
+/************************************************
  * Completes the level and starts the next one.
  ************************************************/
 LevelManager.prototype.LevelComplete = function()
 {
 	this._puzzleNumber = this._currentPuzzle.GetDifficulty() + 1;
 	this.StartLevel();
+
+	// Add 5 seconds per successful puzzle.
+	this._stopWatch.AddTime(5000);
 	SoundManager.Play("complete");
 };
 

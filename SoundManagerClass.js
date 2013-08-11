@@ -91,6 +91,17 @@ SoundManagerClass.prototype.Play = function(soundId)
 };
 
 /************************************************
+ * Pauses a sound playing with the sound manager.
+ ************************************************/
+SoundManagerClass.prototype.Pause = function(soundId)
+{
+	var soundObject = this._sounds[soundId];
+	if (soundObject != null)
+		soundObject.AudioObject.pause();
+};
+
+
+/************************************************
  * Plays a sound with the sound manager.
  * Note: Make sure the soundId is the id of an audio object in the html.
  ************************************************/
