@@ -28,6 +28,9 @@ LevelManager.prototype.UpdateClock = function(timeRemaining)
 	timeRemaining = timeRemaining / 1000.0;
 	var gameClock = document.getElementById("gameClock");
 	gameClock.textContent = timeRemaining;
+
+	if (timeRemaining < 10)
+		SoundManager.Play("tick");
 }
 
 LevelManager.prototype.OnClick = function(id)
@@ -45,14 +48,8 @@ LevelManager.prototype.OnClick = function(id)
 LevelManager.prototype.GameOver = function()
 {
 	var flipperGrid = document.getElementById("flipperGrid");
-	var solutionGrid = document.getElementById("solutionGrid");
 
-	// Destroy the divs if we have any.
-	if (this._currentPuzzle != null)
-	{
-		this._currentPuzzle.GetPlayGrid().DestroyDivs(flipperGrid);
-		this._currentPuzzle.GetSolutionGrid().DestroyDivs(solutionGrid);
-	}
+	this.DestroyDivs();
 
 	var flipperGrid = document.getElementById("flipperGrid");
 	flipperGrid.textContent = "GG";
@@ -72,7 +69,16 @@ LevelManager.prototype.LevelComplete = function()
 	SoundManager.Play("complete");
 };
 
-LevelManager.prototype.StartLevel = function()
+LevelManager.prototype.SetupDivs = function()
+{
+	var flipperGrid = document.getElementById("flipperGrid");
+	var solutionGrid = document.getElementById("solutionGrid");
+	// Create the divs for the new puzzle
+	this._currentPuzzle.GetPlayGrid().CreateDivs(flipperGrid, this.OnClick, this);
+	this._currentPuzzle.GetSolutionGrid().CreateDivs(solutionGrid);
+};
+
+LevelManager.prototype.DestroyDivs = function()
 {
 	var flipperGrid = document.getElementById("flipperGrid");
 	var solutionGrid = document.getElementById("solutionGrid");
@@ -83,14 +89,14 @@ LevelManager.prototype.StartLevel = function()
 		this._currentPuzzle.GetPlayGrid().DestroyDivs(flipperGrid);
 		this._currentPuzzle.GetSolutionGrid().DestroyDivs(solutionGrid);
 	}
+};
 
-	// Get a new puzzle.
+LevelManager.prototype.StartLevel = function()
+{
+	this.DestroyDivs();
 	this._currentPuzzle = this._puzzleFactory.GetPuzzle(this._puzzleNumber);
-	
-	// Create the divs for the new puzzle
-	this._currentPuzzle.GetPlayGrid().CreateDivs(flipperGrid, this.OnClick, this);
-	this._currentPuzzle.GetSolutionGrid().CreateDivs(solutionGrid);
-	
+	this.SetupDivs();
+
 	// How many pixels to put between the playing board and the solution board.
 	var hackySpacingBetweenGrids = 100;
 	

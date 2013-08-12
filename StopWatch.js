@@ -7,23 +7,33 @@ StopWatch = function(interval, onTickCallback, onCompleteCallback)
 	this._intervalId;
 };
 
+/************************************************
+ * Sets the time remaining (in milliseconds) for this
+ * stopwatch.
+ ************************************************/
 StopWatch.prototype.SetTimeRemaining = function(milliseconds) 
 {
 	this._timeRemaining = milliseconds;
 };
 
+/************************************************
+ * Adds time (in milliseconds) to this stopwatch.
+ ************************************************/
 StopWatch.prototype.AddTime = function(milliseconds)
 {
 	this._timeRemaining += milliseconds;
 	this._onTickCallback(this._timeRemaining);
 };
 
+/************************************************
+ * Starts this stopwatch.
+ ************************************************/
 StopWatch.prototype.Start = function()
 {
 	if (this._intervalId == null)
 	{
-        var _self = this;
         // Every interval millisections, tick.
+        var _self = this;
         this._intervalId = setInterval(
         	function () 
         	{ 
@@ -35,6 +45,9 @@ StopWatch.prototype.Start = function()
 	}
 };
 
+/************************************************
+ * The function that gets called every 'interval'
+ ************************************************/
 StopWatch.prototype.OnTick = function()
 {
 	this._timeRemaining -= this._interval;
@@ -47,6 +60,9 @@ StopWatch.prototype.OnTick = function()
 	}
 };
 
+/************************************************
+ * Stops this stopwatch, does not call OnComplete
+ ************************************************/
 StopWatch.prototype.Stop = function()
 {
 	if (this._intervalId != null)
