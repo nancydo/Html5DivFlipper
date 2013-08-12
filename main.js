@@ -15,7 +15,7 @@ function InitGlobals()
 }
 
 // The main function called on window load
-window.onload = function()
+function Main()
 {
 	InitGlobals();
 

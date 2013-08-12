@@ -18,7 +18,7 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/prototype/1.7.1.0/prototype.js">
 	</script>
 	</head>
-	<body>
+	<body onload="Main();">
 		<div id="backgroundContainer"> .
 			<div id="backgroundDarkness"> </div>
 
@@ -51,6 +51,7 @@
 	 			<button id="reset">Reset</button>
 	 			<button id="hint">Hint</button>
 	 			<button id="skipButton">Skip</button>
+	 			<button id="muteMusic" onclick="SoundManager.SetMusicVolume(0);">Mute Music</button>
 	 		</div>
 	 	</div>
 

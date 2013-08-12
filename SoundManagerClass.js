@@ -67,6 +67,7 @@ SoundManagerClass.prototype.Initialize = function()
 	this.RegisterSound("boimp", SoundType.Effect);
 	this.RegisterSound("complete", SoundType.Effect);
 	this.RegisterSound("tick", SoundType.Effect);
+
 	this.RegisterSound("happyland", SoundType.Music);
 };
 
@@ -82,7 +83,9 @@ SoundManagerClass.prototype.Play = function(soundId)
 		var audioObj = soundObject.AudioObject;
 
 		audioObj.volume = this._masterVolume * (isEffect ? this._effectVolume : this._musicVolume);
-		audioObj.currentTime = 0;
+
+		if (audioObj.currentTime != 0)
+			audioObj.currentTime = 0;
 
 		if (!isEffect)
 			audioObj.loop = true;
