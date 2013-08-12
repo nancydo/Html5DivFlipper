@@ -47,8 +47,8 @@
 {
 	position: absolute;
 	right: 0px;
+	color: #000000;
 }
-
 
 #gameClock
 {
@@ -70,3 +70,34 @@
     vertical-align: middle;
     text-align: center;
 }
+
+#backgroundContainer
+{
+	position:fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+#backgroundDarkness
+{
+	position:fixed;
+	left: 0px;
+    top: 0px;
+	width: 100%;
+    height: 100%;
+    opacity: 0.8;
+    background-color: #0c0c0c;
+    z-index: 1;
+}
+
+h1
+ {
+ color:#FFFFFF;
+ }
+ p
+ {
+ color:#FFFFFF;
+ } 

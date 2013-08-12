@@ -20,4 +20,5 @@ window.onload = function()
 	InitGlobals();
 
 	var levelManager = new LevelManager();
+	var background = new AnimatedBackground();
 };

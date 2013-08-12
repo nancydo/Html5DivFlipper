@@ -15,8 +15,8 @@ function LevelManager()
 		_self.GameOver();
 	};
 
-	this._stopWatch = new StopWatch(1000, updateClock, timeOver	);
-	this._stopWatch.SetTimeRemaining(10000);
+	this._stopWatch = new StopWatch(1000, updateClock, timeOver);
+	this._stopWatch.SetTimeRemaining(30000);
 	this._stopWatch.Start();
 	
 	this.StartLevel();
