@@ -25,11 +25,30 @@ function LevelManager()
 
 LevelManager.prototype.UpdateClock = function(timeRemaining)
 {
-	timeRemaining = timeRemaining / 1000.0;
-	var gameClock = document.getElementById("gameClock");
-	gameClock.textContent = timeRemaining;
+	// Get total seconds remaining.
+	var secondsRemaining = Math.floor(timeRemaining / 1000.0);
 
-	if (timeRemaining < 10)
+	// Get total minutes remaining and adjust remaining seconds.
+	var minutesRemaining = Math.floor(secondsRemaining / 60.0); 
+	secondsRemaining = secondsRemaining % 60;
+
+	var timeString = "";
+
+	if (minutesRemaining < 10)
+		timeString += "0";
+
+	timeString += minutesRemaining;
+	timeString += ":";
+
+	if (secondsRemaining < 10)
+		timeString += "0";
+
+	timeString += secondsRemaining;
+
+	var gameClock = document.getElementById("gameClock");
+	gameClock.textContent = timeString;
+
+	if (secondsRemaining < 10)
 		SoundManager.Play("tick");
 }
 
@@ -51,8 +70,14 @@ LevelManager.prototype.GameOver = function()
 
 	this.DestroyDivs();
 
-	var flipperGrid = document.getElementById("flipperGrid");
-	flipperGrid.textContent = "GG";
+	var gameArea = document.getElementById("gameArea");
+	gameArea.style.display = "none";
+
+	var gameClock = document.getElementById("gameClock");
+	gameClock.style.display = "none";
+
+	GameManager.ShowMainMenu();
+	
 	SoundManager.Pause("happyland");
 };
 

@@ -1,5 +1,6 @@
 // Global Variables
 var SoundManager;
+var GameManager;
 
 var RECTANGLE_SIZE = 60;
 var RECTANGLE_PADDING = 5;
@@ -9,16 +10,16 @@ var RECTANGLE_PADDING = 5;
 function InitGlobals()
 {	
 	SoundManager = new SoundManagerClass();
+
 	SoundManager.SetMasterVolume(0.7);
 	SoundManager.SetMusicVolume(0.3);
 	SoundManager.SetEffectVolume(0.6);
+
+	GameManager = new GameManagerClass();
 }
 
 // The main function called on window load
 function Main()
 {
 	InitGlobals();
-
-	var levelManager = new LevelManager();
-	var background = new AnimatedBackground();
 };

@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>Flipper</title>
+
 	<link rel="stylesheet" type="text/css" href="flipper.css">
 	<script type="text/javascript" src="main.js"></script>
 	<script type="text/javascript" src="LevelManager.js"></script>
@@ -14,23 +15,23 @@
 	<script type="text/javascript" src="SoundManagerClass.js"></script>
 	<script type="text/javascript" src="StopWatch.js"></script>
 	<script type="text/javascript" src="AnimatedBackground.js"></script>
+	<script type="text/javascript" src="GameManagerClass.js"></script>
+	<script type="text/javascript" src="MainMenu.js"></script>
 
 	<script src="http://ajax.googleapis.com/ajax/libs/prototype/1.7.1.0/prototype.js">
 	</script>
 	</head>
 	<body onload="Main();">
-		<div id="backgroundContainer"> .
-			<div id="backgroundDarkness"> </div>
 
-		</div>
 		<!-- Media Container -->
+		<!-- Keep the really large files in the main HTML page so we can ensure they are loaded in code -->
 		<div style="display:none;">
 	        <audio id="boimp" src="droplet.mp3" controls preload="auto" autobuffer></audio>
 	        <audio id="complete" src="complete.mp3" controls preload="auto" autobuffer></audio>
 	        <audio id="happyland" src="happyland.mp3" controls preload="auto" autobuffer></audio>
 	        <audio id="tick" src="tick.mp3" controls preload="auto" autobuffer></audio>
 		</div>
-		<div id="gameClock"> Hey </div>
+		<div id="gameClock"> u no see me, i in neenja mode </div>
 		<div id="gameArea">
 			<!-- This is the game area containing the main grid and game stats -->
 			<div id="flipperBoard">
