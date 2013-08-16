@@ -35,9 +35,9 @@ SoundManagerClass.prototype.UpdateVolumes = function()
 		var soundObj = this._sounds[index];
 
 		if (soundObj.SoundType == SoundType.Effect)
-			soundObj.AudioObject.volume = this._musicVolume * this._effectVolume;
+			soundObj.AudioObject.volume = this._masterVolume * this._effectVolume;
 		else
-			soundObj.AudioObject.volume = this._musicVolume * this._musicVolume;
+			soundObj.AudioObject.volume = this._masterVolume * this._musicVolume;
 	}
 };
 
