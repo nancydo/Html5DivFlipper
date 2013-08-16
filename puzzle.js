@@ -1,7 +1,6 @@
 var RECTANGLE_SIZE = 60;
 var RECTANGLE_PADDING = 5;
 
-
 /***************************************************
  * Puzzle.js
  * Describes a puzzle
@@ -13,7 +12,7 @@ Puzzle = function(size, baseState, solutionSet)
 	this._solutionGrid = new Grid(size, baseState, RECTANGLE_SIZE, RECTANGLE_PADDING);
 	this._baseState = baseState;
 	this._solutionSet = solutionSet;
-	this.FlipSolution();
+//	this.FlipSolution();
 };
 
 /************************************************

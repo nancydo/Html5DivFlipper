@@ -40,6 +40,7 @@ LevelManager.prototype.UpdateClock = function(timeRemaining)
 	timeString += minutesRemaining;
 	timeString += ":";
 
+	// Start ticking with less than 10 seconds left.
 	if (secondsRemaining < 10)
 		timeString += "0";
 
@@ -48,7 +49,7 @@ LevelManager.prototype.UpdateClock = function(timeRemaining)
 	var gameClock = document.getElementById("gameClock");
 	gameClock.textContent = timeString;
 
-	if (secondsRemaining < 10)
+	if (minutesRemaining == 0 && secondsRemaining < 10)
 		SoundManager.Play("tick");
 }
 
@@ -66,8 +67,6 @@ LevelManager.prototype.OnClick = function(id)
  ************************************************/
 LevelManager.prototype.GameOver = function()
 {
-	var flipperGrid = document.getElementById("flipperGrid");
-
 	this.DestroyDivs();
 
 	var gameArea = document.getElementById("gameArea");
@@ -86,6 +85,10 @@ LevelManager.prototype.GameOver = function()
  ************************************************/
 LevelManager.prototype.LevelComplete = function()
 {
+	// Since these live in the HTML right now, find them and show them.
+	var gameArea = document.getElementById("gameArea");
+	var gameClock = document.getElementById("gameClock");
+
 	this._puzzleNumber = this._currentPuzzle.GetDifficulty() + 1;
 	this.StartLevel();
 
@@ -94,64 +97,63 @@ LevelManager.prototype.LevelComplete = function()
 	SoundManager.Play("complete");
 };
 
+
 LevelManager.prototype.SetupDivs = function()
 {
 	var flipperGrid = document.getElementById("flipperGrid");
-	var solutionGrid = document.getElementById("solutionGrid");
+
 	// Create the divs for the new puzzle
-	this._currentPuzzle.GetPlayGrid().CreateDivs(flipperGrid, this.OnClick, this);
-	this._currentPuzzle.GetSolutionGrid().CreateDivs(solutionGrid);
+	this._currentPuzzle.GetPlayGrid().CreateDivs(flipperGrid);
+
+	// Center the game area on the screen.
+	var gameAreaDiv = document.getElementById("gameArea");
+	var gameAreaWidth = this._currentPuzzle.GetPlayGrid().Width();// + this._currentPuzzle.GetSolutionGrid().Width() + hackySpacingBetweenGrids;
+
+	gameAreaDiv.style.marginLeft = -gameAreaWidth / 2 + "px";
+	gameAreaDiv.style.marginTop = -gameAreaWidth / 2 + "px";
+
+	gameAreaDiv.style.width = gameAreaWidth + "px";
+	gameAreaDiv.style.height = gameAreaWidth + "px";
+
+	// Set the sizes of the areas.
+	flipperGrid.style.width = flipperGrid.style.height = this._currentPuzzle.GetPlayGrid().Width() + "px";
 };
 
 LevelManager.prototype.DestroyDivs = function()
 {
 	var flipperGrid = document.getElementById("flipperGrid");
-	var solutionGrid = document.getElementById("solutionGrid");
 
 	// Destroy the divs if we have any.
 	if (this._currentPuzzle != null)
-	{
 		this._currentPuzzle.GetPlayGrid().DestroyDivs(flipperGrid);
-		this._currentPuzzle.GetSolutionGrid().DestroyDivs(solutionGrid);
-	}
 };
 
 LevelManager.prototype.StartLevel = function()
 {
 	this.DestroyDivs();
+
 	this._currentPuzzle = this._puzzleFactory.GetPuzzle(this._puzzleNumber);
 	this.SetupDivs();
 
-	// How many pixels to put between the playing board and the solution board.
-	var hackySpacingBetweenGrids = 100;
-	
-	// Center the game area on the screen.
-	var gameAreaWidth = this._currentPuzzle.GetPlayGrid().Width() + this._currentPuzzle.GetSolutionGrid().Width() + hackySpacingBetweenGrids;
-	$("gameArea").style.marginLeft = -gameAreaWidth / 2 + "px";
-	$("gameArea").style.width = gameAreaWidth + "px";
-
-	var gameAreaHeight = this._currentPuzzle.GetPlayGrid().Width();
-	$("gameArea").style.height = gameAreaHeight + "px";
-	$("gameArea").style.marginTop = -gameAreaHeight / 2 + "px";
-
-	// Set the sizes of the areas.
-	flipperGrid.style.width = flipperGrid.style.height = this._currentPuzzle.GetPlayGrid().Width() + "px";
-	solutionGrid.style.width = solutionGrid.style.height = this._currentPuzzle.GetSolutionGrid().Width() + "px";
+	// Let the puzzle on the solution sit for 1 second before letting them play.
+	var _self = this;
+	setTimeout( function() { _self.BeginPuzzle(); }, 1000);
 
 	$("par").textContent = "Par: " + this._currentPuzzle._solutionSet.GetClickPoints().length;
 	$("difficultySpan").textContent = "Rating: " + this._currentPuzzle.GetDifficulty();
 
 	var currentPuzzle = this._currentPuzzle;
-	var resetButton = document.getElementById("reset");
-	resetButton.onclick = function() { currentPuzzle.Reset(); }
-
-	// Add event handler for the hint button
-	var hintButton = document.getElementById("hint");
-	hintButton.onclick = function() { currentPuzzle.GetHint(); }
-
-	// probably doesn't belong here,
-	// Add event handler for the skip button
-	var skipButton = document.getElementById("skipButton");
-	var myself = this;
-	skipButton.onclick = function() { myself.LevelComplete(); }
 };
+
+LevelManager.prototype.BeginPuzzle = function()
+{
+	this._currentPuzzle.FlipSolution();
+
+	var _self = this;
+	var clickHandler = function()
+		{
+			_self.OnClick(this.id);
+		};
+
+	this._currentPuzzle.GetPlayGrid().AttachClickHandlers(clickHandler);
+}

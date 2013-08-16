@@ -6,7 +6,7 @@ Grid = function(gridSize, baseState, rectangleSize, rectanglePadding)
 {
 	this.grid = Create2DArray(gridSize, gridSize);
 	this.gridSize = gridSize;
-	this.rectangleSize = rectangleSize;
+	this.rectangleSize = 500 / gridSize;
 	this.rectanglePadding = rectanglePadding;
 
 	for (var row = 0; row < gridSize; row++)
@@ -21,7 +21,15 @@ Grid = function(gridSize, baseState, rectangleSize, rectanglePadding)
 	this.FlipBaseState(baseState);
 }
 
-Grid.prototype.CreateDivs = function(outerDiv, handler, self)
+Grid.prototype.CreateDivs = function(container)
+{
+	this.AttachDivs(container);
+	var _self = this;
+	setTimeout( function() { _self.AnimateCreatedDivs();}, 500);
+};
+
+
+Grid.prototype.AttachDivs = function(container)
 {
 	for (var row = 0; row < this.gridSize; row++)
 	{
@@ -35,21 +43,83 @@ Grid.prototype.CreateDivs = function(outerDiv, handler, self)
 			div.style.width = div.style.height = this.rectangleSize + "px";
 			div.style.left = col * (this.rectangleSize + this.rectanglePadding) + "px";
 			div.style.top = row * (this.rectangleSize + this.rectanglePadding)+ "px";
-			div.onclick =  function() { self.OnClick(this.id); };
+			$(div).css("transform", "scale(0.1, 0.1)");
+			$(div).css("opacity", "0");
+
 			this.grid[row][col].div = div;
-			outerDiv.appendChild(div);
+			container.appendChild(div);
 		}
 	}
-};
+}
 
-Grid.prototype.DestroyDivs = function(outerDiv)
+Grid.prototype.AnimateCreatedDivs = function()
 {
 	for (var row = 0; row < this.gridSize; row++)
 	{
 		for (var col = 0; col < this.gridSize; col++)
 		{
-			var rectangle = this.grid[row][col];
-			outerDiv.removeChild(rectangle.div);
+			var div = this.grid[row][col].div;
+			$(div).css("transform", "scale(1, 1)");
+			$(div).css("opacity", "1");
+		}
+	}
+}
+
+Grid.prototype.AttachClickHandlers = function(handler)
+{
+	for (var row = 0; row < this.gridSize; row++)
+	{
+		for (var col = 0; col < this.gridSize; col++)
+		{
+			var div = this.grid[row][col].div
+			div.onclick = handler;
+		}
+	}
+}
+
+Grid.prototype.RemoveClickHandlers = function()
+{
+	for (var row = 0; row < this.gridSize; row++)
+	{
+		for (var col = 0; col < this.gridSize; col++)
+		{
+			var div = this.grid[row][col].div
+			div.onclick = null;
+		}
+	}
+}
+
+Grid.prototype.DestroyDivs = function(container)
+{
+	this.AnimateDestroyedDivs();
+
+	var _self = this;
+	setTimeout( function() { _self.DetachDivs(container)}, 500);
+};
+
+
+Grid.prototype.AnimateDestroyedDivs = function()
+{
+	for (var row = 0; row < this.gridSize; row++)
+	{
+		for (var col = 0; col < this.gridSize; col++)
+		{
+			var div = this.grid[row][col].div;
+			$(div).css("transform", "scale(2, 2)");
+			$(div).css("opacity", "0");
+			$(div).css("z-index", "100");
+		}
+	}
+};
+
+Grid.prototype.DetachDivs = function(container)
+{
+	for (var row = 0; row < this.gridSize; row++)
+	{
+		for (var col = 0; col < this.gridSize; col++)
+		{
+			var div = this.grid[row][col].div;
+			container.removeChild(div);
 		}
 	}
 };
@@ -186,12 +256,12 @@ Grid.prototype.SameConfiguration = function(grid2)
 
 	for (var row = 0; row < this.grid.length; row++)
 	{
+		// Each row must have same number of columns
+		if (this.grid[row].length != grid2.grid[row].length)
+			return false;
+
 		for (var col = 0; col < this.grid[row].length; col++)
 		{
-			// Each row must have same number of columns
-			if (this.grid[row].length != grid2.grid[row].length)
-				return false;
-
 			// Each slot must be the same state
 			if (this.grid[row][col].on != grid2.grid[row][col].on)
 				return false;
@@ -200,20 +270,6 @@ Grid.prototype.SameConfiguration = function(grid2)
 
 	return true;
 };
-
-
-// Update all the elements in the grid
-Grid.prototype.Update = function(ctx)
-{
-	for (var row = 0; row < this.gridSize; row++)
-	{
-		for (var col = 0; col < this.gridSize; col++)
-		{
-			this.grid[row][col].Update();
-		}
-	}
-};
-
 
 Grid.prototype.SetHintPoint = function(point)
 {

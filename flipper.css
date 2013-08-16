@@ -101,33 +101,65 @@
 }
 
 h1
- {
- color:#FFFFFF;
- }
- p
- {
- color:#FFFFFF;
- } 
+{
+    color:#FFFFFF;
+}
+p
+{
+    color:#FFFFFF;
+} 
 
  .button
  {
-    border-style: solid;
-	border-radius: 10px;
-    border-color: #FFFFFF;
-    border-width: 2px;
-    background-color: #000000;
-    
+    border-radius: 5px;
+    background-color: RGB(0, 125, 25);
+    border: 1px solid black;
+  
     position:fixed;
-    width: 300px;
-    height: 40px;
+    width: 120px;
+    height: 120px;
+
+    transition: right ease-out 0.5s,
+                opacity linear 0.5s;
+ }
+
+ .button:active
+ {
+    -ms-transform: scale(.75, .75);
+    -webkit-transform: scale(.75, .75);
+    -moz-transform: scale(.75, .75);
+    transform: scale(.75, .75);
+ }
+
+ .buttonLabel
+ {
+    position:absolute;
+    bottom:0px;
 
     line-height: 40px;
     color: #FFFFFF;
-    font-size:xx-large;
+    font-size: x-large;
+    font-family: Arial, Helvetica, sans-serif;
     vertical-align: middle;
     text-align: center;
+    width: 120px;
+ }
 
-    transition: 0.5s ease-out;
+ .buttonIcon
+ {
+    position:absolute;
+    top:5px;
+    left:20px;
+    display:block;
+
+    line-height: 80px;
+    color: #FFFFFF;
+    font-size:x-large;
+    font-family:Arial,Helvetica,sans-serif;
+    vertical-align: middle;
+    text-align: center;
+    width:80px;
+    height:80px;
  }
 
 .disabled

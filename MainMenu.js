@@ -1,17 +1,16 @@
 // Constants!
 var MAIN_MENU_BUTTON_TOP = 200;
-var MAIN_MENU_BUTTON_RIGHT_START = 3000;
+var MAIN_MENU_BUTTON_RIGHT_START = 150;
 var MAIN_MENU_BUTTON_RIGHT_FINAL = 100;
-var MAIN_MENU_BUTTON_SPACER = 50;
+var MAIN_MENU_BUTTON_SPACER = 140;
 var MAIN_MENU_STAGGER_DELAY = 100;
 var ANIMATION_LENGTH = 500;
 
 // Description of all of the buttons on this menu.
-var MAIN_MENU_BUTTONS = [ { Label: "Progression Mode", Enabled: false }, 
-                { Label: "Timed Mode", Enabled: true }, 
-                { Label: "Endless Mode", Enabled: false }, 
-                { Label: "Options", Enabled: false },
-                { Label: "Credits", Enabled: false}];
+var MAIN_MENU_BUTTONS = [ { Label: "Challenge", Enabled: false, Icon:"star-icon.png" }, 
+                { Label: "Timed", Enabled: true, Icon:"clock-icon.png" }, 
+                { Label: "Endless", Enabled: false, Icon:"endless-icon.png"}, 
+                { Label: "Options", Enabled: false, Icon:"wrench-icon.png"}];
 
 // An enum for Main Menu button indices.
 var MM_BUTTON_INDICES = {Progression: 0, Timed: 1, Endless: 2, Options: 3};
@@ -37,7 +36,7 @@ MainMenu.prototype.Show = function()
 
 	this._showing = true;
 	for (var i = 0; i < MAIN_MENU_BUTTONS.length; i++)
-		this.ShowButton(i);
+		this.ShowButton(i); 
 };
 
 /******************************************************************************
@@ -62,11 +61,24 @@ MainMenu.prototype.ShowButton = function(buttonIndex)
 
 	if (!MAIN_MENU_BUTTONS[buttonIndex].Enabled)
 		button.className += "disabled ";
+
 	// Have it animate in from the left, by specifying the right to be super far
 	// then in its final place.
 	button.style.right = MAIN_MENU_BUTTON_RIGHT_START + "px";
 	button.style.top = MAIN_MENU_BUTTON_TOP + MAIN_MENU_BUTTON_SPACER * buttonIndex + "px";
-	button.textContent = MAIN_MENU_BUTTONS[buttonIndex].Label;
+	button.style.opacity = 0;
+
+	// Create the label
+	var label = document.createElement("div");
+	label.className = "buttonLabel";
+	label.textContent = MAIN_MENU_BUTTONS[buttonIndex].Label;
+	button.appendChild(label);
+
+	// Create the icon
+	var icon = document.createElement("img");
+	icon.src = MAIN_MENU_BUTTONS[buttonIndex].Icon;
+	icon.className = "buttonIcon";
+	button.appendChild(icon);
 
 	// Setup the event handler
 	var _self = this;
@@ -79,6 +91,7 @@ MainMenu.prototype.ShowButton = function(buttonIndex)
 	var animateIn = function() 
 		{ 
 			button.style.right = MAIN_MENU_BUTTON_RIGHT_FINAL + "px"; 
+			button.style.opacity = MAIN_MENU_BUTTONS[buttonIndex].Enabled ? 1 : 0.5;
 		};
 
 	document.body.appendChild(button);
@@ -113,7 +126,7 @@ MainMenu.prototype.ButtonClick = function(buttonIndex)
 	// After stagger delay * number of buttons AND the animation length,
 	// start the game.
 	setTimeout(callBack, ANIMATION_LENGTH + MAIN_MENU_STAGGER_DELAY * MAIN_MENU_BUTTONS.length);
-	
+
 	// Hide the main menu.
 	this.Hide();
 };
@@ -130,6 +143,7 @@ MainMenu.prototype.HideButton = function(buttonIndex)
 	var animateAway = function()
 	{
 		button.style.right = MAIN_MENU_BUTTON_RIGHT_START + "px";
+		button.style.opacity = 0;
 		setTimeout( function() 
 		{
 			_self.DestroyButton(buttonIndex);
