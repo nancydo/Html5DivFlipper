@@ -28,6 +28,17 @@
 	transition: 0.5s;
 }
 
+#flipperGrid
+{
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    top: 50%;
+    left: 50%;
+    margin-left: -250px;
+    margin-top: -250px;
+}
+
 #gameArea
 {	
 	position: absolute;
@@ -36,6 +47,12 @@
 	padding: 0px;
 	margin: 0px;
 	display: none;
+    margin-left: -512px;
+    margin-top: -384px;
+    width: 1024px;
+    height: 768px;
+    border-color: #FFFFFF;
+    border-width: 1px;
 }
 
 #flipperBoard
@@ -125,10 +142,10 @@ p
 
  .button:active
  {
-    -ms-transform: scale(.75, .75);
-    -webkit-transform: scale(.75, .75);
-    -moz-transform: scale(.75, .75);
-    transform: scale(.75, .75);
+    -ms-transform: scale(.95, .95);
+    -webkit-transform: scale(.95, .95);
+    -moz-transform: scale(.95, .95);
+    transform: scale(.95, .95);
  }
 
  .buttonLabel
@@ -165,4 +182,17 @@ p
 .disabled
 {
 	opacity: 0.5;
+}
+
+.gameStatus
+{
+    position:absolute;
+    right: 0px;
+    width: 200px;
+    height: 200px;
+}
+
+#solutionGrid
+{
+    top: 300px;
 }

@@ -85,47 +85,38 @@ LevelManager.prototype.GameOver = function()
  ************************************************/
 LevelManager.prototype.LevelComplete = function()
 {
-	// Since these live in the HTML right now, find them and show them.
-	var gameArea = document.getElementById("gameArea");
-	var gameClock = document.getElementById("gameClock");
-
-	this._puzzleNumber = this._currentPuzzle.GetDifficulty() + 1;
-	this.StartLevel();
-
 	// Add 5 seconds per successful puzzle.
 	this._stopWatch.AddTime(5000);
 	SoundManager.Play("complete");
+
+	this._puzzleNumber = this._currentPuzzle.GetDifficulty() + 1;
+
+	this._currentPuzzle.GetPlayGrid().RemoveClickHandlers();
+	var _self = this;
+	setTimeout( function() { _self.StartLevel();}, 500);
 };
 
 
 LevelManager.prototype.SetupDivs = function()
 {
 	var flipperGrid = document.getElementById("flipperGrid");
+	var solutionGrid = document.getElementById("solutionGrid");
 
 	// Create the divs for the new puzzle
 	this._currentPuzzle.GetPlayGrid().CreateDivs(flipperGrid);
-
-	// Center the game area on the screen.
-	var gameAreaDiv = document.getElementById("gameArea");
-	var gameAreaWidth = this._currentPuzzle.GetPlayGrid().Width();// + this._currentPuzzle.GetSolutionGrid().Width() + hackySpacingBetweenGrids;
-
-	gameAreaDiv.style.marginLeft = -gameAreaWidth / 2 + "px";
-	gameAreaDiv.style.marginTop = -gameAreaWidth / 2 + "px";
-
-	gameAreaDiv.style.width = gameAreaWidth + "px";
-	gameAreaDiv.style.height = gameAreaWidth + "px";
-
-	// Set the sizes of the areas.
-	flipperGrid.style.width = flipperGrid.style.height = this._currentPuzzle.GetPlayGrid().Width() + "px";
+	this._currentPuzzle.GetSolutionGrid().CreateDivs(solutionGrid);
 };
 
 LevelManager.prototype.DestroyDivs = function()
 {
-	var flipperGrid = document.getElementById("flipperGrid");
-
 	// Destroy the divs if we have any.
 	if (this._currentPuzzle != null)
+	{
+		var flipperGrid = document.getElementById("flipperGrid");
+		var solutionGrid = document.getElementById("solutionGrid");
 		this._currentPuzzle.GetPlayGrid().DestroyDivs(flipperGrid);
+		this._currentPuzzle.GetSolutionGrid().DestroyDivs(solutionGrid);
+	}
 };
 
 LevelManager.prototype.StartLevel = function()

@@ -2,12 +2,10 @@
 var ENUM_BASE_STATE = { ALL_ON: 0, OUTLINE: 1, BACKSLASH: 2, DIAMOND: 3, CHECKERBOARD: 4, NUM_PATTERNS: 5};
 
 // Grid Class
-Grid = function(gridSize, baseState, rectangleSize, rectanglePadding)
+Grid = function(gridSize, baseState)
 {
 	this.grid = Create2DArray(gridSize, gridSize);
 	this.gridSize = gridSize;
-	this.rectangleSize = 500 / gridSize;
-	this.rectanglePadding = rectanglePadding;
 
 	for (var row = 0; row < gridSize; row++)
 	{
@@ -31,6 +29,10 @@ Grid.prototype.CreateDivs = function(container)
 
 Grid.prototype.AttachDivs = function(container)
 {
+	var paddingPercent = 0.10;
+	var rectanglePadding = container.clientWidth * paddingPercent / this.gridSize;
+	var rectangleSize = container.clientWidth * (1 - paddingPercent) / this.gridSize;
+	
 	for (var row = 0; row < this.gridSize; row++)
 	{
 		for (var col = 0; col < this.gridSize; col++)
@@ -40,9 +42,11 @@ Grid.prototype.AttachDivs = function(container)
 			var div = document.createElement("div");
 			div.className = rectangle.on ? "rectangleOn" : "rectangleOff";
 			div.id = row + ":" + col;
-			div.style.width = div.style.height = this.rectangleSize + "px";
-			div.style.left = col * (this.rectangleSize + this.rectanglePadding) + "px";
-			div.style.top = row * (this.rectangleSize + this.rectanglePadding)+ "px";
+			div.style.width = div.style.height = rectangleSize + "px";
+			div.style.left = col * (rectangleSize + rectanglePadding) + "px";
+			div.style.top = row * (rectangleSize + rectanglePadding)+ "px";
+
+			// Initial state for animations
 			$(div).css("transform", "scale(0.1, 0.1)");
 			$(div).css("opacity", "0");
 
@@ -79,14 +83,7 @@ Grid.prototype.AttachClickHandlers = function(handler)
 
 Grid.prototype.RemoveClickHandlers = function()
 {
-	for (var row = 0; row < this.gridSize; row++)
-	{
-		for (var col = 0; col < this.gridSize; col++)
-		{
-			var div = this.grid[row][col].div
-			div.onclick = null;
-		}
-	}
+	this.AttachClickHandlers(null);
 }
 
 Grid.prototype.DestroyDivs = function(container)
@@ -123,11 +120,6 @@ Grid.prototype.DetachDivs = function(container)
 		}
 	}
 };
-
-Grid.prototype.Width = function()
-{
-	return this.rectangleSize * this.gridSize + (this.gridSize - 1) * this.rectanglePadding;
-}
 
 Grid.prototype.GridClick = function(id)
 {
