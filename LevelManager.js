@@ -85,15 +85,16 @@ LevelManager.prototype.GameOver = function()
  ************************************************/
 LevelManager.prototype.LevelComplete = function()
 {
-	// Add 5 seconds per successful puzzle.
-	this._stopWatch.AddTime(5000);
-	SoundManager.Play("complete");
-
 	this._puzzleNumber = this._currentPuzzle.GetDifficulty() + 1;
 
 	this._currentPuzzle.GetPlayGrid().RemoveClickHandlers();
 	var _self = this;
-	setTimeout( function() { _self.StartLevel();}, 500);
+	setTimeout( function() {
+		// Add 5 seconds per successful puzzle.
+		_self._stopWatch.AddTime(5000);
+		SoundManager.Play("complete"); 
+		_self.StartLevel();
+	}, 500);
 };
 
 
