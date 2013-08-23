@@ -122,12 +122,11 @@ LevelManager.prototype.LevelComplete = function()
 	this._puzzleNumber = this._currentPuzzle.GetDifficulty() + 1;
 
 	this._currentPuzzle.GetPlayGrid().RemoveClickHandlers();
-
-
+	
 	var _self = this;
 	setTimeout( function() {
 		// Add 5 seconds per successful puzzle.	
-		if (this._gameMode == LevelManager.GameModes.Timed)
+		if (_self._gameMode == LevelManager.GameModes.Timed)
 			_self._stopWatch.AddTime(5000);
 	
 		SoundManager.Play("complete"); 
