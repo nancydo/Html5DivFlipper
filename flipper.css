@@ -97,7 +97,7 @@
     width: 120px;
     height: 120px;
 
-    transition: right ease-out 0.5s,
+    transition: right 1s ease-out 0.5s,
                 opacity linear 0.5s;
  }
 
@@ -204,4 +204,24 @@
 #gameClockStatus
 {
     top: 128px;
+}
+
+#challengeButton
+{
+    top: 50px;
+}
+
+#timedButton
+{
+    top: 200px;
+}
+
+#endlessButton
+{
+    top: 350px;
+}
+
+#optionsButton
+{
+    top: 500px;
 }

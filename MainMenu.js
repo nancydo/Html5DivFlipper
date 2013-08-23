@@ -7,10 +7,12 @@ var MAIN_MENU_STAGGER_DELAY = 100;
 var ANIMATION_LENGTH = 500;
 
 // Description of all of the buttons on this menu.
-var MAIN_MENU_BUTTONS = [ { Label: "Challenge", Enabled: false, Icon:"star-icon.png" }, 
-                { Label: "Timed", Enabled: true, Icon:"clock-icon.png" }, 
-                { Label: "Endless", Enabled: false, Icon:"endless-icon.png"}, 
-                { Label: "Options", Enabled: false, Icon:"wrench-icon.png"}];
+var MAIN_MENU_BUTTONS = [
+	{ Label: "challengeButton", Enabled: false},
+	{ Label: "timedButton", Enabled: true},
+	{ Label: "endlessButton", Enabled: false},
+	{ Label: "optionsButton", Enabled: false}
+	];
 
 // An enum for Main Menu button indices.
 var MM_BUTTON_INDICES = {Progression: 0, Timed: 1, Endless: 2, Options: 3};
@@ -22,7 +24,6 @@ var MM_BUTTON_INDICES = {Progression: 0, Timed: 1, Endless: 2, Options: 3};
 MainMenu = function()
 {
 	this._logo = null;
-	this._buttonDivs = new Array(MAIN_MENU_BUTTONS.length);
 	this._showing = false;
 };
 
@@ -31,12 +32,11 @@ MainMenu = function()
  ******************************************************************************/
 MainMenu.prototype.Show = function()
 {
-	if (this._showing)
-		return;
-
-	this._showing = true;
-	for (var i = 0; i < MAIN_MENU_BUTTONS.length; i++)
-		this.ShowButton(i); 
+	if (!this._showing){
+		this._showing = true;
+		for (var i = 0; i < MAIN_MENU_BUTTONS.length; i++)
+			this.ShowButton(i);
+	}
 };
 
 /******************************************************************************
@@ -44,12 +44,11 @@ MainMenu.prototype.Show = function()
  ******************************************************************************/
 MainMenu.prototype.Hide = function()
 {
-	if (!this._showing)
-		return;
-
-	this._showing = false;
-	for (var i = 0; i < MAIN_MENU_BUTTONS.length; i++)
-		this.HideButton(i);
+	if (this._showing) {
+		this._showing = false;
+		for (var i = 0; i < MAIN_MENU_BUTTONS.length; i++)
+			this.HideButton(i);
+	}
 };
 
 /******************************************************************************
@@ -57,46 +56,28 @@ MainMenu.prototype.Hide = function()
  ******************************************************************************/
 MainMenu.prototype.ShowButton = function(buttonIndex)
 {
-	var button = CreateDefaultButton();
-
-	if (!MAIN_MENU_BUTTONS[buttonIndex].Enabled)
-		button.className += "disabled ";
+	var button = this.GetButtonFromIndex(buttonIndex);
+	/*if (!MAIN_MENU_BUTTONS[buttonIndex].Enabled)
+		button.className += "disabled ";*/
 
 	// Have it animate in from the left, by specifying the right to be super far
 	// then in its final place.
-	button.style.right = MAIN_MENU_BUTTON_RIGHT_START + "px";
-	button.style.top = MAIN_MENU_BUTTON_TOP + MAIN_MENU_BUTTON_SPACER * buttonIndex + "px";
-	button.style.opacity = 0;
-
-	// Create the label
-	var label = document.createElement("div");
-	label.className = "buttonLabel";
-	label.textContent = MAIN_MENU_BUTTONS[buttonIndex].Label;
-	button.appendChild(label);
-
-	// Create the icon
-	var icon = document.createElement("img");
-	icon.src = MAIN_MENU_BUTTONS[buttonIndex].Icon;
-	icon.className = "buttonIcon";
-	button.appendChild(icon);
+	button.css("right", MAIN_MENU_BUTTON_RIGHT_START + "px");
+	button.css("opacity", 0);
 
 	// Setup the event handler
 	var _self = this;
-	button.onclick = function() 
+	button.click(function() 
 		{ 
 			_self.ButtonClick(buttonIndex); 
-		};
+		});
 
 	// After a short delay, move the button to its rightful location.
 	var animateIn = function() 
 		{ 
-			button.style.right = MAIN_MENU_BUTTON_RIGHT_FINAL + "px"; 
-			button.style.opacity = MAIN_MENU_BUTTONS[buttonIndex].Enabled ? 1 : 0.5;
+			button.css("right", MAIN_MENU_BUTTON_RIGHT_FINAL + "px"); 
+			button.css("opacity", MAIN_MENU_BUTTONS[buttonIndex].Enabled ? 1 : 0.5);
 		};
-
-	var gameArea = document.getElementById("gameArea");
-	gameArea.appendChild(button);
-	this._buttonDivs[buttonIndex] = button;
 
 	setTimeout(animateIn, 1 + buttonIndex * MAIN_MENU_STAGGER_DELAY);
 };
@@ -111,7 +92,7 @@ MainMenu.prototype.ButtonClick = function(buttonIndex)
 	var callBack = null;
 	if (buttonIndex == MM_BUTTON_INDICES.Timed)
 	{
-		callBack = function() 
+		callBack = function()
 		{ 
 			GameManager.BeginTimedMode(); 
 		};
@@ -122,7 +103,10 @@ MainMenu.prototype.ButtonClick = function(buttonIndex)
 	// Remove all on click handlers (performance in IE?)
 	// Stops Nam from breaking things.
 	for (var i = 0; i < MAIN_MENU_BUTTONS.length; i++)
-		this._buttonDivs.onclick = null;
+	{
+		var button = this.GetButtonFromIndex(buttonIndex);
+		button.click(null);
+	}
 
 	// After stagger delay * number of buttons AND the animation length,
 	// start the game.
@@ -137,14 +121,14 @@ MainMenu.prototype.ButtonClick = function(buttonIndex)
  ******************************************************************************/
 MainMenu.prototype.HideButton = function(buttonIndex)
 {
-	var button = this._buttonDivs[buttonIndex];
+	var button = this.GetButtonFromIndex(buttonIndex);
 	var _self = this;
 
 	// Animate the button away,
 	var animateAway = function()
 	{
-		button.style.right = MAIN_MENU_BUTTON_RIGHT_START + "px";
-		button.style.opacity = 0;
+		button.css("right", MAIN_MENU_BUTTON_RIGHT_START + "px");
+		button.css("opacity", 0);
 		setTimeout( function() 
 		{
 			_self.DestroyButton(buttonIndex);
@@ -160,16 +144,16 @@ MainMenu.prototype.HideButton = function(buttonIndex)
 MainMenu.prototype.DestroyButton = function(buttonIndex)
 {
 	var gameArea = document.getElementById("gameArea");
-	gameArea.removeChild(this._buttonDivs[buttonIndex]);
-	this._buttonDivs[buttonIndex] = null;
+	var button = this.GetButtonFromIndex(buttonIndex);
+	button.remove();
 };
 
 /******************************************************************************
- * Creates a button.
+ * Returns button at an index.
  ******************************************************************************/
-function CreateDefaultButton()
+MainMenu.prototype.GetButtonFromIndex = function(buttonIndex)
 {
-	var defaultButton = document.createElement("div");
-	defaultButton.className += "button ";
-	return defaultButton;
+	var buttonId = "#" + MAIN_MENU_BUTTONS[buttonIndex].Label;
+	var button = $(buttonId);
+	return button;
 }
