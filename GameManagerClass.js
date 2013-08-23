@@ -25,11 +25,7 @@ GameManagerClass.prototype.ShowMainMenu = function()
 GameManagerClass.prototype.BeginTimedMode = function()
 {
 	// Since these live in the HTML right now, find them and show them.
-	var gameArea = document.getElementById("gameArea");
-	gameArea.style.display = "block";
 
-	var gameClock = document.getElementById("gameClock");
-	gameClock.style.display = "block";
-
+	// Reveal Game Area content for timed mode
 	this._levelManager = new LevelManager();
 };

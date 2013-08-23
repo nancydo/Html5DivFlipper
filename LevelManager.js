@@ -46,7 +46,7 @@ LevelManager.prototype.UpdateClock = function(timeRemaining)
 
 	timeString += secondsRemaining;
 
-	var gameClock = document.getElementById("gameClock");
+	var gameClock = document.getElementById("gameClockLabel");
 	gameClock.textContent = timeString;
 
 	if (minutesRemaining == 0 && secondsRemaining < 10)
@@ -69,12 +69,8 @@ LevelManager.prototype.GameOver = function()
 {
 	this.DestroyDivs();
 
-	var gameArea = document.getElementById("gameArea");
-	gameArea.style.display = "none";
-
-	var gameClock = document.getElementById("gameClock");
-	gameClock.style.display = "none";
-
+	// Maybe GameManger.EndTimedMode();
+	
 	GameManager.ShowMainMenu();
 	
 	SoundManager.Pause("happyland");
@@ -131,8 +127,8 @@ LevelManager.prototype.StartLevel = function()
 	var _self = this;
 	setTimeout( function() { _self.BeginPuzzle(); }, 1000);
 
-	$("par").textContent = "Par: " + this._currentPuzzle._solutionSet.GetClickPoints().length;
-	$("difficultySpan").textContent = "Rating: " + this._currentPuzzle.GetDifficulty();
+	$("#parStatus").text(this._currentPuzzle._solutionSet.GetClickPoints().length);
+	$("#levelStatus").text("Rating: " + this._currentPuzzle.GetDifficulty());
 
 	var currentPuzzle = this._currentPuzzle;
 };

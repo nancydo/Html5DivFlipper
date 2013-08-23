@@ -94,7 +94,8 @@ MainMenu.prototype.ShowButton = function(buttonIndex)
 			button.style.opacity = MAIN_MENU_BUTTONS[buttonIndex].Enabled ? 1 : 0.5;
 		};
 
-	document.body.appendChild(button);
+	var gameArea = document.getElementById("gameArea");
+	gameArea.appendChild(button);
 	this._buttonDivs[buttonIndex] = button;
 
 	setTimeout(animateIn, 1 + buttonIndex * MAIN_MENU_STAGGER_DELAY);
@@ -158,7 +159,8 @@ MainMenu.prototype.HideButton = function(buttonIndex)
  ******************************************************************************/
 MainMenu.prototype.DestroyButton = function(buttonIndex)
 {
-	document.body.removeChild(this._buttonDivs[buttonIndex]);
+	var gameArea = document.getElementById("gameArea");
+	gameArea.removeChild(this._buttonDivs[buttonIndex]);
 	this._buttonDivs[buttonIndex] = null;
 };
 

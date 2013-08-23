@@ -30,10 +30,20 @@
 	        <audio id="happyland" src="happyland.mp3" controls preload="auto" autobuffer></audio>
 	        <audio id="tick" src="tick.mp3" controls preload="auto" autobuffer></audio>
 		</div>
-		<div id="gameClock"> u no see me, i in neenja mode </div>
+
 		<div id="gameArea">
 			<div id="flipperGrid"></div>
-			<div id="solutionGrid" class="gameStatus"> test </div>
+
+			<div id="solutionParStatus" class="gameStatusSquare left">
+				<div id="solutionGrid" class="gameStatusSquareContent"> </div>
+				<div id="parStatus" class="gameStatusSquareLabel"> </div>
+			</div>
+
+			<div id="gameClockStatus" class="gameStatusSquare right">
+				<img id="gameClockIcon" class="gameStatusSquareContent" src="clock-icon.png"> </img>
+				<div id="gameClockLabel" class="gameStatusSquareLabel"> </div>
+			</div>
+
 			<!-- This is the game area containing the main grid and game stats -->
 	 	</div>
 	</body>
