@@ -10,7 +10,7 @@ var ANIMATION_LENGTH = 500;
 var MAIN_MENU_BUTTONS = [
 	{ Label: "challengeButton", Enabled: false},
 	{ Label: "timedButton", Enabled: true},
-	{ Label: "endlessButton", Enabled: false},
+	{ Label: "endlessButton", Enabled: true},
 	{ Label: "optionsButton", Enabled: false}
 	];
 
@@ -32,7 +32,8 @@ MainMenu = function()
  ******************************************************************************/
 MainMenu.prototype.Show = function()
 {
-	if (!this._showing){
+	if (!this._showing)
+	{
 		this._showing = true;
 		for (var i = 0; i < MAIN_MENU_BUTTONS.length; i++)
 			this.ShowButton(i);
@@ -44,7 +45,8 @@ MainMenu.prototype.Show = function()
  ******************************************************************************/
 MainMenu.prototype.Hide = function()
 {
-	if (this._showing) {
+	if (this._showing) 
+	{
 		this._showing = false;
 		for (var i = 0; i < MAIN_MENU_BUTTONS.length; i++)
 			this.HideButton(i);
@@ -62,12 +64,14 @@ MainMenu.prototype.ShowButton = function(buttonIndex)
 
 	// Have it animate in from the left, by specifying the right to be super far
 	// then in its final place.
+	button.css("display", "block");
 	button.css("right", MAIN_MENU_BUTTON_RIGHT_START + "px");
 	button.css("opacity", 0);
 
+
 	// Setup the event handler
 	var _self = this;
-	button.click(function() 
+	button.bind("click", function() 
 		{ 
 			_self.ButtonClick(buttonIndex); 
 		});
@@ -97,6 +101,13 @@ MainMenu.prototype.ButtonClick = function(buttonIndex)
 			GameManager.BeginTimedMode(); 
 		};
 	}
+	else if (buttonIndex = MM_BUTTON_INDICES.Endless)
+	{
+		callBack = function()
+		{ 
+			GameManager.BeginEndlessMode(); 
+		};
+	}
 	else
 		return;
 
@@ -105,7 +116,7 @@ MainMenu.prototype.ButtonClick = function(buttonIndex)
 	for (var i = 0; i < MAIN_MENU_BUTTONS.length; i++)
 	{
 		var button = this.GetButtonFromIndex(buttonIndex);
-		button.click(null);
+		button.unbind("click");
 	}
 
 	// After stagger delay * number of buttons AND the animation length,
@@ -129,23 +140,18 @@ MainMenu.prototype.HideButton = function(buttonIndex)
 	{
 		button.css("right", MAIN_MENU_BUTTON_RIGHT_START + "px");
 		button.css("opacity", 0);
+
+		// Once the animation has completed, lets set it to display: none
+		// so we can't click it anymore.
 		setTimeout( function() 
 		{
-			_self.DestroyButton(buttonIndex);
+			button.css("display", "none");
 		}, ANIMATION_LENGTH);
+
+		setTimeout()
 	};
 
 	setTimeout(animateAway, 1 + buttonIndex * MAIN_MENU_STAGGER_DELAY);
-};
-
-/******************************************************************************
- * Destroys a button.
- ******************************************************************************/
-MainMenu.prototype.DestroyButton = function(buttonIndex)
-{
-	var gameArea = document.getElementById("gameArea");
-	var button = this.GetButtonFromIndex(buttonIndex);
-	button.remove();
 };
 
 /******************************************************************************
