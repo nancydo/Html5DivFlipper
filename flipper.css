@@ -96,8 +96,9 @@
     position:fixed;
     width: 120px;
     height: 120px;
+    display: none;
 
-    transition: right 1s ease-out 0.5s,
+    transition: right ease-out 0.5s,
                 opacity linear 0.5s;
  }
 
@@ -154,6 +155,7 @@
     margin-top: -60px;
     border: 1px solid white;
     background-color: #3c3c3c;
+    display: none;
 }
 
 .gameStatusSquareContent

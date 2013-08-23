@@ -1,26 +1,52 @@
-function LevelManager()
+/************************************************
+ * An enum for the different game modes we support.
+ ************************************************/
+LevelManager.GameModes = {Timed: 0, Endless: 1, Challenge: 2};
+
+function LevelManager(gameMode)
 {
 	this._puzzleFactory = new PuzzleFactory();
 	this._puzzleNumber = 1;
 	this._currentPuzzle = null;
+	this._gameMode = gameMode;
 
-	var _self = this;
-	var updateClock = function(timeRemaining)
+	this.RevealGameComponents();
+
+	// Create the game clock for Timed mode.
+	if (this._gameMode == LevelManager.GameModes.Timed)
 	{
-		_self.UpdateClock(timeRemaining);
-	};
+		var _self = this;
+		var updateClock = function(timeRemaining)
+		{
+			_self.UpdateClock(timeRemaining);
+		};
 
-	var timeOver = function()
-	{
-		_self.GameOver();
-	};
+		var timeOver = function()
+		{
+			_self.GameOver();
+		};
 
-	this._stopWatch = new StopWatch(1000, updateClock, timeOver);
-	this._stopWatch.SetTimeRemaining(30000);
-	this._stopWatch.Start();
-	
+		this._stopWatch = new StopWatch(1000, updateClock, timeOver);
+		this._stopWatch.SetTimeRemaining(30000);
+		this._stopWatch.Start();
+	}
+
 	this.StartLevel();
 	SoundManager.Play("happyland");
+};
+
+/******************************************************************************
+ * Reveals the divs within the game area required for this game mode.
+ ******************************************************************************/
+LevelManager.prototype.RevealGameComponents = function()
+{
+	$("#flipperGrid").css("display", "block");
+	$("#solutionParStatus").css("display", "block");
+
+	if (this._gameMode == LevelManager.GameModes.Timed)
+	{
+		$("#gameClockStatus").css("display", "block");
+	}
 };
 
 LevelManager.prototype.UpdateClock = function(timeRemaining)
@@ -62,6 +88,17 @@ LevelManager.prototype.OnClick = function(id)
 		this.LevelComplete();
 };
 
+LevelManager.prototype.HideGameComponents = function()
+{
+	$("#flipperGrid").css("display", "none");
+	$("#solutionParStatus").css("display", "none");
+
+	if (this._gameMode == LevelManager.GameModes.Timed)
+	{
+		$("#gameClockStatus").css("display", "none");
+	}
+};
+
 /************************************************
  * Ends the current LevelManager and cleans up.
  ************************************************/
@@ -69,8 +106,9 @@ LevelManager.prototype.GameOver = function()
 {
 	this.DestroyDivs();
 
-	// Maybe GameManger.EndTimedMode();
-	
+	this.HideGameComponents();
+
+	// Maybe GameManger.EndTimedMode()
 	GameManager.ShowMainMenu();
 	
 	SoundManager.Pause("happyland");
@@ -84,13 +122,18 @@ LevelManager.prototype.LevelComplete = function()
 	this._puzzleNumber = this._currentPuzzle.GetDifficulty() + 1;
 
 	this._currentPuzzle.GetPlayGrid().RemoveClickHandlers();
+
+
 	var _self = this;
 	setTimeout( function() {
-		// Add 5 seconds per successful puzzle.
-		_self._stopWatch.AddTime(5000);
+		// Add 5 seconds per successful puzzle.	
+		if (this._gameMode == LevelManager.GameModes.Timed)
+			_self._stopWatch.AddTime(5000);
+	
 		SoundManager.Play("complete"); 
 		_self.StartLevel();
 	}, 500);
+
 };
 
 

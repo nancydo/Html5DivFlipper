@@ -24,8 +24,10 @@ GameManagerClass.prototype.ShowMainMenu = function()
  ******************************************************************************/
 GameManagerClass.prototype.BeginTimedMode = function()
 {
-	// Since these live in the HTML right now, find them and show them.
-
-	// Reveal Game Area content for timed mode
-	this._levelManager = new LevelManager();
+	this._levelManager = new LevelManager(LevelManager.GameModes.Timed);
 };
+
+GameManagerClass.prototype.BeginEndlessMode = function()
+{
+	this._levelManager = new LevelManager(LevelManager.GameModes.Endless);
+}
