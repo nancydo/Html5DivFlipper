@@ -101,7 +101,7 @@ MainMenu.prototype.ButtonClick = function(buttonIndex)
 			GameManager.BeginTimedMode(); 
 		};
 	}
-	else if (buttonIndex = MM_BUTTON_INDICES.Endless)
+	else if (buttonIndex == MM_BUTTON_INDICES.Endless)
 	{
 		callBack = function()
 		{ 
