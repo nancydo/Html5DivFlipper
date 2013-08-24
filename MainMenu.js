@@ -25,6 +25,7 @@ MainMenu = function()
 {
 	this._logo = null;
 	this._showing = false;
+	this._optionsOpen = false;
 };
 
 /******************************************************************************
@@ -86,6 +87,27 @@ MainMenu.prototype.ShowButton = function(buttonIndex)
 	setTimeout(animateIn, 1 + buttonIndex * MAIN_MENU_STAGGER_DELAY);
 };
 
+
+/******************************************************************************
+ * Shows the options menu
+ ******************************************************************************/
+MainMenu.prototype.ShowOptionsMenu = function()
+{
+	$("#gameArea").css("background-color", "#FF99C2");
+	$("#gameArea").css("opacity", "0.5");
+	this._optionsOpen = true;
+}
+
+/******************************************************************************
+ * Hides the options menu, does the opposite of ShowOptionsMenu
+ ******************************************************************************/
+MainMenu.prototype.HideOptionsMenu = function()
+{
+	$("#gameArea").css("background-color", "");
+	$("#gameArea").css("opacity", "1");
+	this._optionsOpen = false;
+}
+
 /******************************************************************************
  * The callback for when someone clicks a button on the main menu.
  ******************************************************************************/
@@ -94,7 +116,12 @@ MainMenu.prototype.ButtonClick = function(buttonIndex)
 	SoundManager.Play("boimp");
 
 	var callBack = null;
-	if (buttonIndex == MM_BUTTON_INDICES.Timed)
+	if (buttonIndex == MM_BUTTON_INDICES.Options)
+	{
+		this._optionsOpen ? this.HideOptionsMenu() : this.ShowOptionsMenu();
+		return;
+	}
+	else if (buttonIndex == MM_BUTTON_INDICES.Timed)
 	{
 		callBack = function()
 		{ 
