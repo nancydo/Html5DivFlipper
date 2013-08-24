@@ -165,7 +165,7 @@
 
     line-height: 80px;
     color: #FFFFFF;
-    font-size:x-large;
+    font-size:xx-large;
     font-family:Arial,Helvetica,sans-serif;
     vertical-align: middle;
     text-align: center;
@@ -224,4 +224,18 @@
 #optionsButton
 {
     top: 500px;
+}
+
+/*since xx-large is the largest font size, 
+  we can set it to bigger by setting parent element*/
+#gameLevelStatus
+{
+    top: 300px;
+    font-size: xx-large;
+}
+
+/* Then setting a % on this one */
+#gameLevelContent
+{
+    font-size: 150%;
 }

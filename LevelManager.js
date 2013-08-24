@@ -42,6 +42,7 @@ LevelManager.prototype.RevealGameComponents = function()
 {
 	$("#flipperGrid").css("display", "block");
 	$("#solutionParStatus").css("display", "block");
+	$("#gameLevelStatus").css("display", "block");
 
 	if (this._gameMode == LevelManager.GameModes.Timed)
 	{
@@ -92,6 +93,7 @@ LevelManager.prototype.HideGameComponents = function()
 {
 	$("#flipperGrid").css("display", "none");
 	$("#solutionParStatus").css("display", "none");
+	$("#gameLevelStatus").css("display", "none");
 
 	if (this._gameMode == LevelManager.GameModes.Timed)
 	{
@@ -122,11 +124,12 @@ LevelManager.prototype.LevelComplete = function()
 	this._puzzleNumber = this._currentPuzzle.GetDifficulty() + 1;
 
 	this._currentPuzzle.GetPlayGrid().RemoveClickHandlers();
-	
+
 	var _self = this;
 	setTimeout( function() {
 		// Add 5 seconds per successful puzzle.	
-		if (_self._gameMode == LevelManager.GameModes.Timed)
+		if (_self
+			._gameMode == LevelManager.GameModes.Timed)
 			_self._stopWatch.AddTime(5000);
 	
 		SoundManager.Play("complete"); 
@@ -170,7 +173,7 @@ LevelManager.prototype.StartLevel = function()
 	setTimeout( function() { _self.BeginPuzzle(); }, 1000);
 
 	$("#parStatus").text(this._currentPuzzle._solutionSet.GetClickPoints().length);
-	$("#levelStatus").text("Rating: " + this._currentPuzzle.GetDifficulty());
+	$("#gameLevelContent").text(this._currentPuzzle.GetDifficulty());
 
 	var currentPuzzle = this._currentPuzzle;
 };
