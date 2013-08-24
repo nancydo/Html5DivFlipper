@@ -43,11 +43,18 @@ LevelManager.prototype.RevealGameComponents = function()
 	$("#flipperGrid").css("display", "block");
 	$("#solutionParStatus").css("display", "block");
 	$("#gameLevelStatus").css("display", "block");
+	$("#resetButton").css("display", "block");
 
 	if (this._gameMode == LevelManager.GameModes.Timed)
 	{
 		$("#gameClockStatus").css("display", "block");
 	}
+
+	var _self = this;
+	$("#resetButton").bind("click", function() 
+	{ 
+		_self._currentPuzzle.Reset();
+	});
 };
 
 LevelManager.prototype.UpdateClock = function(timeRemaining)
@@ -94,6 +101,10 @@ LevelManager.prototype.HideGameComponents = function()
 	$("#flipperGrid").css("display", "none");
 	$("#solutionParStatus").css("display", "none");
 	$("#gameLevelStatus").css("display", "none");
+
+	var _self = this;
+	$("#resetButton").css("display", "none");
+	$("#resetButton").unblind("click");
 
 	if (this._gameMode == LevelManager.GameModes.Timed)
 	{
@@ -189,4 +200,9 @@ LevelManager.prototype.BeginPuzzle = function()
 		};
 
 	this._currentPuzzle.GetPlayGrid().AttachClickHandlers(clickHandler);
+}
+
+LevelManager.prototype.ResetPuzzle = function()
+{
+	this._currentPuzzle.Reset();
 }
