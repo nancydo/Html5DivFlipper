@@ -19,3 +19,24 @@ Point = function(x, y)
 	if (y != null)
 		this.y = y;
 };
+
+/******************************************************************************
+ * Switches the CSS of the current color theme
+ ******************************************************************************/
+function SetCssTheme(themeTitle)
+{
+	var linkElements = document.getElementsByTagName("link");
+	for (var i = 0;  i < linkElements.length; i++)
+	{
+		// If the rel contains the word stylesheet, and has a title
+		if ((linkElements[i].rel.indexOf( "stylesheet" ) != -1) && linkElements[i].title) 
+		{
+			// Disable this theme
+			linkElements[i].disabled = true;
+
+			// Unless it has the theme we're switching to.
+			if (linkElements[i].title == themeTitle)
+				linkElements[i].disabled = false ;
+		}
+    }
+}

@@ -1,0 +1,51 @@
+/******************************************************************************
+ * General Styling
+ ******************************************************************************/
+#backgroundDarkness
+{
+    background-color: #000000;
+}
+
+/******************************************************************************
+ * Main Menu Styling
+ ******************************************************************************/
+.button
+{
+    border-radius: 5px;
+    background-color: #006BB2;
+    border: 1px solid black;  
+}
+.buttonLabel
+ {
+    color: #FFFFFF;
+ }
+
+/******************************************************************************
+ * Gameplay Styling
+ ******************************************************************************/
+.gameStatusSquare
+{
+    border: 1px solid white;
+    background-color: #3c3c3c;
+
+    /*Label + Content text color*/
+    color: #FFFFFF;
+}
+
+.rectangleOn
+{
+	border-radius: 5px;
+	background-color: #80CCE6;
+}
+
+.rectangleOff
+{
+	border-radius: 5px;
+	background-color: #006BB2;
+}
+
+.hint
+{
+	border-radius: 5px;
+	background-color: RGB(128,128,128);
+}

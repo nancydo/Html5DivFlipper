@@ -104,7 +104,7 @@ LevelManager.prototype.HideGameComponents = function()
 
 	var _self = this;
 	$("#resetButton").css("display", "none");
-	$("#resetButton").unblind("click");
+	$("#resetButton").unbind("click");
 
 	if (this._gameMode == LevelManager.GameModes.Timed)
 	{
