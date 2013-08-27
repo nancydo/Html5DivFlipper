@@ -8,14 +8,13 @@ var ANIMATION_LENGTH = 500;
 
 // Description of all of the buttons on this menu.
 var MAIN_MENU_BUTTONS = [
-	{ Label: "challengeButton", Enabled: false},
-	{ Label: "timedButton", Enabled: true},
-	{ Label: "endlessButton", Enabled: true},
-	{ Label: "optionsButton", Enabled: true}
-	];
+	{ Label: "challengeButton"},
+	{ Label: "timedButton"},
+	{ Label: "endlessButton"},
+	{ Label: "optionsButton"}];
 
 // An enum for Main Menu button indices.
-var MM_BUTTON_INDICES = {Progression: 0, Timed: 1, Endless: 2, Options: 3};
+var MM_BUTTON_INDICES = {Challenge: 0, Timed: 1, Endless: 2, Options: 3};
 
 /******************************************************************************
  * A class which governs the main menu.
@@ -78,7 +77,7 @@ MainMenu.prototype.ShowButton = function(buttonIndex)
 	var animateIn = function() 
 		{ 
 			button.css("right", MAIN_MENU_BUTTON_RIGHT_FINAL + "px"); 
-			button.css("opacity", MAIN_MENU_BUTTONS[buttonIndex].Enabled ? 1 : 0.5);
+			button.css("opacity", 1);
 		};
 
 	setTimeout(animateIn, 1 + buttonIndex * MAIN_MENU_STAGGER_DELAY);
@@ -112,6 +111,14 @@ MainMenu.prototype.ButtonClick = function(buttonIndex)
 			GameManager.BeginEndlessMode(); 
 		};
 	}
+	else if (buttonIndex == MM_BUTTON_INDICES.Challenge)
+	{
+		callBack = function()
+		{ 
+			GameManager.BeginChallengeMode(10, 20); 
+		};
+	}
+	
 	else
 		return;
 

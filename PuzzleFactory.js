@@ -77,6 +77,55 @@ PuzzleFactory.prototype.Initialize = function()
 	 });
 };
 
+/**************************************************************************************************
+ * GetChallenges
+ * Gets numPuzzles within the range of lowerbound to upperbound and adds them to puzzleArray.
+ **************************************************************************************************/
+PuzzleFactory.prototype.GetChallenges = function(lowerbound, upperbound, numPuzzles, puzzleArray)
+{
+	// Get all the puzzles possible
+	var lowerboundIndex = lowerbound == 0 ? 0 : null;
+	var upperboundIndex = upperbound == 0 ? 0 : null;
+
+	// Find the indices within the generated puzzles that fit these bounds.
+	for (var i = 0; i < this._puzzles.length; i++)
+	{
+		// If we haven't found the lower bound index yet
+		if (!lowerboundIndex  && (this._puzzles[i].GetDifficulty()) >= lowerbound)
+			lowerboundIndex = i;
+
+		// If we haven't found the lower bound index yet
+		if (!upperboundIndex  && (this._puzzles[i].GetDifficulty()) >= upperbound)
+			upperboundIndex = i;
+
+		if (lowerboundIndex && upperboundIndex)
+			break;
+	}
+
+	// Do we have enough puzzles?
+	if (upperboundIndex - lowerboundIndex < numPuzzles)
+	{
+		// O_o
+		// We require more puzzles.
+		alert("Insufficient puzzles, need to make MOAR... but don't know how >_<");
+
+		// Generate Puzzles
+		// Recurse - We have to go deeper.
+
+	}
+
+	var potentialChallenges = this._puzzles.slice(lowerboundIndex, upperboundIndex);
+
+	// Shuffle this array
+	potentialChallenges.sort( function(a, b)
+	 { 
+	 	return Math.random() - Math.random();
+	 });
+
+	for (var i = 0; i < numPuzzles; i++)
+		puzzleArray.push(potentialChallenges[i]);
+}
+
 /************************************************
  * GetPuzzle
  * Returns a level of approximate difficulty.

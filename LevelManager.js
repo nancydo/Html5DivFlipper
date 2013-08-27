@@ -2,13 +2,17 @@
  * An enum for the different game modes we support.
  ************************************************/
 LevelManager.GameModes = {Timed: 0, Endless: 1, Challenge: 2};
+LevelManager.PuzzlesPerChallenge = 10;
 
-function LevelManager(gameMode)
+function LevelManager(gameMode, lowerbound, upperbound)
 {
 	this._puzzleFactory = new PuzzleFactory();
 	this._puzzleNumber = 1;
 	this._currentPuzzle = null;
 	this._gameMode = gameMode;
+	this._lowerbound = lowerbound;
+	this._upperbound = upperbound;
+	this._challenges = [];
 
 	this.RevealGameComponents();
 
@@ -30,6 +34,9 @@ function LevelManager(gameMode)
 		this._stopWatch.SetTimeRemaining(30000);
 		this._stopWatch.Start();
 	}
+
+	if (this._gameMode == LevelManager.GameModes.Challenge)
+		this._puzzleFactory.GetChallenges(lowerbound, upperbound, LevelManager.PuzzlesPerChallenge, this._challenges);
 
 	this.StartLevel();
 	SoundManager.Play("happyland");
@@ -121,7 +128,6 @@ LevelManager.prototype.GameOver = function()
 
 	this.HideGameComponents();
 
-	// Maybe GameManger.EndTimedMode()
 	GameManager.ShowMainMenu();
 	
 	SoundManager.Pause("happyland");
@@ -132,15 +138,22 @@ LevelManager.prototype.GameOver = function()
  ************************************************/
 LevelManager.prototype.LevelComplete = function()
 {
-	this._puzzleNumber = this._currentPuzzle.GetDifficulty() + 1;
+	if (this._gameMode == LevelManager.GameModes.Timed ||
+		this._gameMode == LevelManager.GameModes.Endless)
+	{
+		this._puzzleNumber = this._currentPuzzle.GetDifficulty() + 1;
+	}
+	else if (this._gameMode == LevelManager.GameModes.Challenge)
+	{
+		this._puzzleNumber++;
+	}
 
 	this._currentPuzzle.GetPlayGrid().RemoveClickHandlers();
 
 	var _self = this;
 	setTimeout( function() {
 		// Add 5 seconds per successful puzzle.	
-		if (_self
-			._gameMode == LevelManager.GameModes.Timed)
+		if (_self._gameMode == LevelManager.GameModes.Timed)
 			_self._stopWatch.AddTime(5000);
 	
 		SoundManager.Play("complete"); 
@@ -176,7 +189,24 @@ LevelManager.prototype.StartLevel = function()
 {
 	this.DestroyDivs();
 
-	this._currentPuzzle = this._puzzleFactory.GetPuzzle(this._puzzleNumber);
+	if (this._gameMode == LevelManager.GameModes.Timed ||
+		this._gameMode == LevelManager.GameModes.Endless)
+	{
+		this._currentPuzzle = this._puzzleFactory.GetPuzzle(this._puzzleNumber);
+	}
+	else if (this._gameMode == LevelManager.GameModes.Challenge)
+	{
+		// We're done with this challenge
+		if (this._puzzleNumber == LevelManager.PuzzlesPerChallenge)
+		{
+			this._currentPuzzle = null;
+			this.GameOver();
+			return;
+		}
+
+		this._currentPuzzle = this._challenges[this._puzzleNumber];
+	}
+
 	this.SetupDivs();
 
 	// Let the puzzle on the solution sit for 1 second before letting them play.
@@ -184,7 +214,7 @@ LevelManager.prototype.StartLevel = function()
 	setTimeout( function() { _self.BeginPuzzle(); }, 1000);
 
 	$("#parStatus").text(this._currentPuzzle._solutionSet.GetClickPoints().length);
-	$("#gameLevelContent").text(this._currentPuzzle.GetDifficulty());
+	$("#gameLevelContent").text(this._puzzleNumber);
 
 	var currentPuzzle = this._currentPuzzle;
 };

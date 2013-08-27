@@ -37,3 +37,8 @@ GameManagerClass.prototype.OptionsMenu = function()
 {
 	return this._optionsMenu;
 }
+
+GameManagerClass.prototype.BeginChallengeMode = function(lowerbound, upperbound)
+{
+	this._levelManager = new LevelManager(LevelManager.GameModes.Challenge, lowerbound, upperbound);
+}
