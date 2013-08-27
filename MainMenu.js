@@ -118,7 +118,6 @@ MainMenu.prototype.ButtonClick = function(buttonIndex)
 			GameManager.BeginChallengeMode(10, 20); 
 		};
 	}
-	
 	else
 		return;
 
@@ -126,7 +125,7 @@ MainMenu.prototype.ButtonClick = function(buttonIndex)
 	// Stops Nam from breaking things.
 	for (var i = 0; i < MAIN_MENU_BUTTONS.length; i++)
 	{
-		var button = this.GetButtonFromIndex(buttonIndex);
+		var button = this.GetButtonFromIndex(i);
 		button.unbind("click");
 	}
 
@@ -158,8 +157,6 @@ MainMenu.prototype.HideButton = function(buttonIndex)
 		{
 			button.css("display", "none");
 		}, ANIMATION_LENGTH);
-
-		setTimeout()
 	};
 
 	setTimeout(animateAway, 1 + buttonIndex * MAIN_MENU_STAGGER_DELAY);
