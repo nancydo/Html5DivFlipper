@@ -31,12 +31,12 @@
 #gameArea
 {	
 	position: absolute;
-	top: 50%;
+	top: 0px;
 	left: 50%;
 	padding: 0px;
 	margin: 0px;
     margin-left: -512px;
-    margin-top: -384px;
+    margin-top: 0px;
     width: 1024px;
     height: 768px;
 }
@@ -211,4 +211,9 @@
 #resetButton
 {
     top: 450px;
+}
+
+#options
+{
+    display: none;
 }

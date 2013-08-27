@@ -11,7 +11,7 @@ var MAIN_MENU_BUTTONS = [
 	{ Label: "challengeButton", Enabled: false},
 	{ Label: "timedButton", Enabled: true},
 	{ Label: "endlessButton", Enabled: true},
-	{ Label: "optionsButton", Enabled: false}
+	{ Label: "optionsButton", Enabled: true}
 	];
 
 // An enum for Main Menu button indices.
@@ -25,7 +25,6 @@ MainMenu = function()
 {
 	this._logo = null;
 	this._showing = false;
-	this._optionsOpen = false;
 };
 
 /******************************************************************************
@@ -60,8 +59,6 @@ MainMenu.prototype.Hide = function()
 MainMenu.prototype.ShowButton = function(buttonIndex)
 {
 	var button = this.GetButtonFromIndex(buttonIndex);
-	/*if (!MAIN_MENU_BUTTONS[buttonIndex].Enabled)
-		button.className += "disabled ";*/
 
 	// Have it animate in from the left, by specifying the right to be super far
 	// then in its final place.
@@ -87,27 +84,6 @@ MainMenu.prototype.ShowButton = function(buttonIndex)
 	setTimeout(animateIn, 1 + buttonIndex * MAIN_MENU_STAGGER_DELAY);
 };
 
-
-/******************************************************************************
- * Shows the options menu
- ******************************************************************************/
-MainMenu.prototype.ShowOptionsMenu = function()
-{
-	$("#gameArea").css("background-color", "#FF99C2");
-	$("#gameArea").css("opacity", "0.5");
-	this._optionsOpen = true;
-}
-
-/******************************************************************************
- * Hides the options menu, does the opposite of ShowOptionsMenu
- ******************************************************************************/
-MainMenu.prototype.HideOptionsMenu = function()
-{
-	$("#gameArea").css("background-color", "");
-	$("#gameArea").css("opacity", "1");
-	this._optionsOpen = false;
-}
-
 /******************************************************************************
  * The callback for when someone clicks a button on the main menu.
  ******************************************************************************/
@@ -118,7 +94,8 @@ MainMenu.prototype.ButtonClick = function(buttonIndex)
 	var callBack = null;
 	if (buttonIndex == MM_BUTTON_INDICES.Options)
 	{
-		this._optionsOpen ? this.HideOptionsMenu() : this.ShowOptionsMenu();
+		GameManager.OptionsMenu().ToggleOptionsMenu();
+		//this._optionsOpen ? this.HideOptionsMenu() : this.ShowOptionsMenu();
 		return;
 	}
 	else if (buttonIndex == MM_BUTTON_INDICES.Timed)
