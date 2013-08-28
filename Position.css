@@ -172,23 +172,33 @@
     width: 120px;
 }
 
-.gameStatusSquare.left
-{
-    left: 215px;
-}
-.gameStatusSquare.right
-{
-    right: 0px;
-}
-
 #solutionParStatus
 {
-    top: 128px;
+    top: 100px;
+}
+
+#gameLevelStatus
+{
+    top: 250px;
+}
+
+#resetButton
+{
+    top: 400px;
 }
 
 #gameClockStatus
 {
-    top: 128px;
+    top: 550px;
+}
+
+.gameStatusSquare.left
+{
+    left: 200px;
+}
+.gameStatusSquare.right
+{
+    right: 0px;
 }
 
 #challengeButton
@@ -215,7 +225,7 @@
   we can set it to bigger by setting parent element*/
 #gameLevelStatus
 {
-    top: 300px;
+    /*top: 300px;*/
     font-size: xx-large;
 }
 
@@ -223,11 +233,6 @@
 #gameLevelContent
 {
     font-size: 150%;
-}
-
-#resetButton
-{
-    top: 450px;
 }
 
 #options
