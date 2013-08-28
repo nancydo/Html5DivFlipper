@@ -22,4 +22,6 @@ function InitGlobals()
 function Main()
 {
 	InitGlobals();
+	ScaleGameArea();
+	$(window).bind("resize", ScaleGameArea);
 };
