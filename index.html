@@ -40,54 +40,55 @@
 	        <audio id="tick" src="tick.mp3" controls preload="auto" autobuffer></audio>
 		</div>
 
-		<div id="gameArea">
-			<div id="flipperGrid"></div>
+		<div id="scalingContainer">
+			<div id="gameArea">
+				<div id="flipperGrid"></div>
 
-			<div id="solutionParStatus" class="gameStatusSquare left">
-				<div id="solutionGrid" class="gameStatusSquareContent"> </div>
-				<div id="parStatus" class="gameStatusSquareLabel"> </div>
-			</div>
+				<div id="solutionParStatus" class="gameStatusSquare left">
+					<div id="solutionGrid" class="gameStatusSquareContent"> </div>
+					<div id="parStatus" class="gameStatusSquareLabel"> </div>
+				</div>
 
-			<div id="gameClockStatus" class="gameStatusSquare right">
-				<img id="gameClockIcon" class="gameStatusSquareContent" src="clock-icon.png"> </img>
-				<div id="gameClockLabel" class="gameStatusSquareLabel"> </div>
-			</div>
+				<div id="gameClockStatus" class="gameStatusSquare right">
+					<img id="gameClockIcon" class="gameStatusSquareContent" src="clock-icon.png"> </img>
+					<div id="gameClockLabel" class="gameStatusSquareLabel"> </div>
+				</div>
 
-			<div id="gameLevelStatus" class="gameStatusSquare right">
-				<div id="gameLevelContent" class="gameStatusSquareContent"> </div>
-				<div id="gameLevelLabel" class="gameStatusSquareLabel"> Rating </div>
-			</div>
+				<div id="gameLevelStatus" class="gameStatusSquare right">
+					<div id="gameLevelContent" class="gameStatusSquareContent"> </div>
+					<div id="gameLevelLabel" class="gameStatusSquareLabel"> Rating </div>
+				</div>
 
-			<div id="resetButton" class="gameStatusSquare right">
-				<div id="gameLevelLabel" class="gameStatusSquareLabel"> Reset Puzzle </div>
-			</div>
+				<div id="resetButton" class="gameStatusSquare right">
+					<div id="gameLevelLabel" class="gameStatusSquareLabel"> Reset Puzzle </div>
+				</div>
 
-			<div id="mainMenu">
-				<div id="challengeButton" class="button">
-					<div class="buttonLabel">Challenge</div>
-					<img src="star-icon.png" class="buttonIcon">
+				<div id="mainMenu">
+					<div id="challengeButton" class="button">
+						<div class="buttonLabel">Challenge</div>
+						<img src="star-icon.png" class="buttonIcon">
+					</div>
+					<div id="timedButton" class="button">
+						<div class="buttonLabel">Timed</div>
+						<img src="clock-icon.png" class="buttonIcon">
+					</div>
+					<div id="endlessButton" class="button">
+						<div class="buttonLabel">Endless</div>
+						<img src="endless-icon.png" class="buttonIcon">
+					</div>
+					<div id="optionsButton" class="button">
+						<div class="buttonLabel">Options</div>
+						<img src="wrench-icon.png" class="buttonIcon">
+					</div>
+					<div id="options">
+						<a href="http://sdrv.ms/15iXzvR">Flipper ideas</a>
+						<div id="volume"></div>
+						<div id="amount"></div>
+						<button onclick="SetCssTheme('Nancy');"> Set Nancy's Theme </button>
+						<button onclick="SetCssTheme('Roy');"> Set Roy's Theme </button>
+					</div>
 				</div>
-				<div id="timedButton" class="button">
-					<div class="buttonLabel">Timed</div>
-					<img src="clock-icon.png" class="buttonIcon">
-				</div>
-				<div id="endlessButton" class="button">
-					<div class="buttonLabel">Endless</div>
-					<img src="endless-icon.png" class="buttonIcon">
-				</div>
-				<div id="optionsButton" class="button">
-					<div class="buttonLabel">Options</div>
-					<img src="wrench-icon.png" class="buttonIcon">
-				</div>
-				<div id="options">
-					<a href="http://sdrv.ms/15iXzvR">Flipper ideas</a>
-					<div id="volume"></div>
-					<div id="amount"></div>
-					<button onclick="SetCssTheme('Nancy');"> Set Nancy's Theme </button>
-					<button onclick="SetCssTheme('Roy');"> Set Roy's Theme </button>
-				</div>
-			</div>
-			<!-- This is the game area containing the main grid and game stats -->
-	 	</div>
+		 	</div>
+		</div>
 	</body>
 </html>

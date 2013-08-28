@@ -46,41 +46,22 @@ function SetCssTheme(themeTitle)
  ******************************************************************************/
 function ScaleGameArea()
 {
-	var gameAreaWidth = $("#gameArea").width();
-	var gameAreaHeight = $("#gameArea").height();
+	var gameAreaWidth = $("#scalingContainer").width();
+	var gameAreaHeight = $("#scalingContainer").height();
 
 	var gameAreaAspectRatio = gameAreaWidth / gameAreaHeight;
 
 	var windowWidth = $(window).width();
 	var windowHeight = $(window).height();
 
-	var heightDelta = windowHeight - gameAreaHeight;
-	var widthDelta = windowWidth - gameAreaWidth;
-
-	var scaleX = 0;
-	var scaleY = 0;
+	var scaleY = windowHeight / gameAreaHeight;
+	var scaleX = windowWidth / gameAreaWidth;
 
 	// Height is closer to what we want than width
-	if (heightDelta <= widthDelta)
-	{
-
-		scaleY = windowHeight / gameAreaHeight;
-
-		var newHeight = scaleY * gameAreaHeight;
-		var newWidth = gameAreaAspectRatio * newHeight;
-
-		scaleX = newWidth / gameAreaWidth;
-
-	}
+	if (scaleY <= scaleX)
+		scaleX = (gameAreaAspectRatio * windowHeight) / gameAreaWidth;
 	else
-	{
-		scaleX = windowWidth / gameAreaWidth;
+		scaleY = (windowWidth / gameAreaAspectRatio) / gameAreaHeight;
 
-		var newWidth = scaleX * gameAreaWidth;
-		var newHeight = newWidth / gameAreaAspectRatio;
-
-		scaleY = newHeight / gameAreaHeight;
-	}
-
-	$("#gameArea").css("transform", "scale(" + scaleX + ", " + scaleY + ")");
+	$("#scalingContainer").css("transform", "scale(" + scaleX + ", " + scaleY + ")");
 }
