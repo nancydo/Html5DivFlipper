@@ -139,7 +139,6 @@
     bottom: 0px;
     width: 120px;
     height: 120px;
-    margin-top: -110px;
     display: none;
 }
 
@@ -174,22 +173,22 @@
 
 #solutionParStatus
 {
-    top: 100px;
+    top: 20px;
 }
 
 #gameLevelStatus
 {
-    top: 250px;
+    top: 170px;
 }
 
 #resetButton
 {
-    top: 400px;
+    top: 320px;
 }
 
 #gameClockStatus
 {
-    top: 550px;
+    top: 470px;
 }
 
 .gameStatusSquare.left
