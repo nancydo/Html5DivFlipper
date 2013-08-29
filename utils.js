@@ -39,6 +39,9 @@ function SetCssTheme(themeTitle)
 				linkElements[i].disabled = false ;
 		}
     }
+
+    // Store this preference
+    SavedStateManager.SetProperty("Theme", themeTitle);
 }
 
 /******************************************************************************

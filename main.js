@@ -1,6 +1,7 @@
 // Global Variables
 var SoundManager;
 var GameManager;
+var SavedStateManager;
 
 var RECTANGLE_SIZE = 60;
 var RECTANGLE_PADDING = 5;
@@ -9,6 +10,9 @@ var RECTANGLE_PADDING = 5;
 // We should set up our globals here.
 function InitGlobals()
 {	
+	SavedStateManager = new SavedStateManagerClass();
+	SavedStateManager.ApplySettings();
+
 	SoundManager = new SoundManagerClass();
 
 	SoundManager.SetMasterVolume(0.7);
