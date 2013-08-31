@@ -49,3 +49,14 @@
 	border-radius: 5px;
 	background-color: RGB(128,128,128);
 }
+
+#options
+{
+    color: white;
+    font-size: 20px;
+}
+
+a
+{
+    color: white;
+}

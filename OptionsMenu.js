@@ -23,9 +23,10 @@ OptionsMenu = function()
  ******************************************************************************/
 OptionsMenu.prototype.ShowOptionsMenu = function()
 {
-	$("#gameArea").css("background-color", "#FF99C2");
-	$("#gameArea").css("opacity", "0.5");
+	/*$("#gameArea").css("background-color", "#FF99C2");
+	$("#gameArea").css("opacity", "0.5");*/
   $("#options").css("display", "block");
+  $("#optionsButton").css("width", "500px");
 
 	// Show the options buttons
 	this._optionsOpen = true;
@@ -36,9 +37,10 @@ OptionsMenu.prototype.ShowOptionsMenu = function()
  ******************************************************************************/
 OptionsMenu.prototype.HideOptionsMenu = function()
 {
-	$("#gameArea").css("background-color", "");
-	$("#gameArea").css("opacity", "1");
+	/*$("#gameArea").css("background-color", "");
+	$("#gameArea").css("opacity", "1");*/
   $("#options").css("display", "none");
+  $("#optionsButton").css("width", "");
 
 	this._optionsOpen = false;
 }
