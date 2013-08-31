@@ -4,14 +4,12 @@
 LevelManager.GameModes = {Timed: 0, Endless: 1, Challenge: 2};
 LevelManager.PuzzlesPerChallenge = 10;
 
-function LevelManager(gameMode, lowerbound, upperbound)
+function LevelManager(gameMode, challengeNumber)
 {
 	this._puzzleFactory = new PuzzleFactory();
 	this._puzzleNumber = 1;
 	this._currentPuzzle = null;
 	this._gameMode = gameMode;
-	this._lowerbound = lowerbound;
-	this._upperbound = upperbound;
 	this._challenges = [];
 
 	this.RevealGameComponents();
@@ -36,7 +34,12 @@ function LevelManager(gameMode, lowerbound, upperbound)
 	}
 
 	if (this._gameMode == LevelManager.GameModes.Challenge)
+	{
+		var lowerbound = challengeNumber * 5;
+		var upperbound = lowerbound + 10;
+		this._challengeNumber = challengeNumber;
 		this._puzzleFactory.GetChallenges(lowerbound, upperbound, LevelManager.PuzzlesPerChallenge, this._challenges);
+	}
 
 	this.StartLevel();
 	SoundManager.Play("happyland");
@@ -127,6 +130,23 @@ LevelManager.prototype.GameOver = function()
 	this.DestroyDivs();
 
 	this.HideGameComponents();
+
+	if (this._gameMode == LevelManager.GameModes.Challenge)
+	{
+		var levelStats = SavedStateManager.GetLevelStats(this._challengeNumber);
+		levelStats.Stars = 3; // :D
+
+		// Unlock the next level.
+		if (levelStats.Stars > 0)
+		{
+			var nextLevelStats = SavedStateManager.GetLevelStats(this._challengeNumber + 1);
+			nextLevelStats.Unlocked = true;
+			SavedStateManager.SaveLevelStats(this._challengeNumber + 1, levelStats);
+		}
+
+		// Save the stats of this level.
+		SavedStateManager.SaveLevelStats(this._challengeNumber, levelStats);
+	}
 
 	GameManager.ShowMainMenu();
 	

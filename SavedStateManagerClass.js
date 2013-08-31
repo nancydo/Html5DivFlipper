@@ -54,10 +54,39 @@ SavedStateManagerClass.prototype.SetProperty = function(propertyName, propertyVa
 	this.SaveData();
 };
 
+SavedStateManagerClass.prototype.GetLevelStats = function(levelNumber)
+{
+	return this._savedState["ChallengeStats"].Levels[levelNumber];
+};
+
+SavedStateManagerClass.prototype.SaveLevelStats = function(levelStats, levelNumber)
+{
+	this._savedState["ChallengeStats"].Levels[levelNumber] = levelStats;
+	this.SaveData();
+};
+
 /******************************************************************************
  * Creates a new saved state with the default settings.
  ******************************************************************************/
 var SavedState = function()
 {
 	this["Theme"] = "Nancy";
+	this["ChallengeStats"] = new ChallengeStats();
+};
+
+var ChallengeStats = function()
+{
+	this.Levels = [];
+	for (var i = 0; i < 50; i++)
+	{
+		this.Levels[i] = new LevelStats();
+	}
+
+	this.Levels[0].Unlocked = true;
+};
+
+var LevelStats = function()
+{
+	this.Unlocked = false;
+	this.Stars = 0;
 };

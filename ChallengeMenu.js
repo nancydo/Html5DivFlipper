@@ -1,6 +1,5 @@
 var CHALLENGEMENU_COLS = 5;
 var CHALLENGEMENU_ROWS = 5;
-
 var CHALLENGEMENU_STAGGER_DELAY = 20;
 
 ChallengeMenu = function()
@@ -8,6 +7,9 @@ ChallengeMenu = function()
 	this._showing = false;
 };
 
+/******************************************************************************
+ * Shows the menu.
+ ******************************************************************************/
 ChallengeMenu.prototype.Show = function()
 {
 	if (this._showing)
@@ -20,30 +22,7 @@ ChallengeMenu.prototype.Show = function()
 		{
 		for (var j = 0; j < CHALLENGEMENU_COLS; j++)
 			{
-			var button = document.createElement("div");
-			$(button).css("top", i * 135 + "px");
-			$(button).css("left", j * 135 + "px");
-			$(button).attr("id", "c" + buttonNumber);
-			$(button).addClass("button");
-			$(button).css("display", "block");
-			$(button).css("opacity", 0);
-			$("#challengeMenu").append(button);
-
-			var label = document.createElement("div");
-			$(label).text(buttonNumber + 1);
-			$(label).addClass("buttonLabel");
-
-			var icon = document.createElement("img");
-			$(icon).addClass("buttonIcon");
-			$(icon).attr('src','lock-icon.png');
-
-			$(button).append(label);
-			$(button).append(icon);
-
-			this.AnimateButton(i, j, buttonNumber);
-			this.AttachClickHandler(button, buttonNumber);
-			// After a short delay, move the button to its rightful location.
-
+			this.CreateButton(i, j, buttonNumber);
 			buttonNumber++;
 			}
 		}
@@ -51,6 +30,46 @@ ChallengeMenu.prototype.Show = function()
 	this._showing = true;
 };
 
+/******************************************************************************
+ * Creates a button.
+ ******************************************************************************/
+ChallengeMenu.prototype.CreateButton = function(i, j, buttonNumber)
+{
+	var button = document.createElement("div");
+	$(button).css("top", i * 135 + "px");
+	$(button).css("left", j * 135 + "px");
+	$(button).attr("id", "c" + buttonNumber);
+	$(button).addClass("button");
+	$(button).css("display", "block");
+	$(button).css("opacity", 0);
+	$("#challengeMenu").append(button);
+
+	var label = document.createElement("div");
+	$(label).text(buttonNumber + 1);
+	$(label).addClass("buttonLabel");
+
+	var icon = document.createElement("img");
+	$(icon).addClass("buttonIcon");
+
+	var levelStats = SavedStateManager.GetLevelStats(buttonNumber);
+	if (levelStats.Unlocked)
+	{
+		this.AttachClickHandler(button, buttonNumber);
+		$(icon).attr('src', levelStats.Stars + 'stars.png');
+	}
+	else
+	{
+		$(icon).attr('src','lock-icon.png');
+	}
+
+	$(button).append(label);
+	$(button).append(icon);
+	this.AnimateButton(buttonNumber, 1);
+}
+
+/******************************************************************************
+ * Attaches click hander to the button
+ ******************************************************************************/
 ChallengeMenu.prototype.AttachClickHandler = function(button, buttonNumber)
 {
 	var _self = this;		
@@ -60,23 +79,37 @@ ChallengeMenu.prototype.AttachClickHandler = function(button, buttonNumber)
 	});	
 }
 
+/******************************************************************************
+ * On click handler for the challenge menu.
+ ******************************************************************************/
 ChallengeMenu.prototype.ButtonClick = function(buttonNumber)
 {
 	this.Hide();
-	GameManager.BeginChallengeMode(5 * buttonNumber, 5 * (buttonNumber + 2));
+
+	setTimeout( function() 
+		{ 
+			GameManager.BeginChallengeMode(buttonNumber);
+		}, ANIMATION_LENGTH);
+	
 }
 
-ChallengeMenu.prototype.AnimateButton = function(i, j, buttonNumber)
+/******************************************************************************
+ * Removes the divs from the DOM.
+ ******************************************************************************/
+ChallengeMenu.prototype.AnimateButton = function(buttonNumber, opacity)
 {
 	var buttonId = "c" + buttonNumber;
 	var animateIn = function() 
 	{ 
- 		$("#" + buttonId).css("opacity", 1); 
+ 		$("#" + buttonId).css("opacity", opacity); 
 	};
 
 	setTimeout(animateIn, 1 + buttonNumber * CHALLENGEMENU_STAGGER_DELAY);
 };
 
+/******************************************************************************
+ * Animates all the divs away, then removes them from the dom.
+ ******************************************************************************/
 ChallengeMenu.prototype.Hide = function()
 {
 	if (!this._showing)
@@ -84,12 +117,21 @@ ChallengeMenu.prototype.Hide = function()
 
 	for (var i = 0; i < CHALLENGEMENU_COLS * CHALLENGEMENU_ROWS; i++)
 	{
-		$("c" + i).remove();
+		this.AnimateButton(i, 0);
 	}
-
-	$("#challengeMenu").css("display", "none");
+	var _self = this;
+	setTimeout( function() { _self.DisposeDivs(); }, ANIMATION_LENGTH);
 
 	this._showing = false;
 };
 
-ChallengeMenu.prototype
+/******************************************************************************
+ * Removes the divs from the DOM.
+ ******************************************************************************/
+ChallengeMenu.prototype.DisposeDivs = function()
+{
+	for (var i = 0; i < CHALLENGEMENU_COLS * CHALLENGEMENU_ROWS; i++)
+		$("#c" + i).remove();
+
+	$("#challengeMenu").css("display", "none");
+}
