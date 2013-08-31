@@ -16,11 +16,9 @@ AnimatedBackground = function()
 	var rectSize = RECTANGLE_SIZE * 2;
 	var rectPadding = RECTANGLE_PADDING * 2;
 
-	// 3000.. coz why not?
-	// This should really be the size of your screen, but that can change with resizes.
-	// no one has 3000x3000 resolution.
-	var cols = 3000 / (rectSize + rectPadding);
-	var rows = 3000 / (rectSize + rectPadding);
+	var largestDimension = screen.width > screen.height ? screen.width : screen.height;
+	var cols = largestDimension / (rectSize + rectPadding);
+	var rows = largestDimension / (rectSize + rectPadding);
 
 	this._backgroundRectangles = [];
 	for (var currentRow = 0; currentRow < rows; currentRow++)

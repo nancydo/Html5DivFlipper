@@ -89,13 +89,15 @@
     display: none;
 
     transition: right ease-out 0.5s,
+                left ease-out 0.5s,
                 opacity linear 0.5s;
                 
     -webkit-transition: right ease-out 0.5s,
-                opacity linear 0.5s;
+                        left ease-out 0.5s,
+                        opacity linear 0.5s;
  }
 
- .button:active .buttonIcon
+ .button:active
  {
     -ms-transform: scale(.95, .95);
     -webkit-transform: scale(.95, .95);
@@ -236,5 +238,17 @@
 
 #options
 {
+    display: none;
+}
+
+#challengeMenu
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 700px;
+    width: 700px;
+    margin-top: -350px;
+    margin-left: -350px;
     display: none;
 }

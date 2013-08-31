@@ -7,6 +7,7 @@ GameManagerClass = function()
 	this._animatedBackground = new AnimatedBackground();
 	this._mainMenu = new MainMenu();
 	this._optionsMenu = new OptionsMenu();
+	this._challengeMenu = new ChallengeMenu();
 
 	this._levelManager = null;
 	this.ShowMainMenu();
@@ -27,6 +28,11 @@ GameManagerClass.prototype.BeginTimedMode = function()
 {
 	this._levelManager = new LevelManager(LevelManager.GameModes.Timed);
 };
+
+GameManagerClass.prototype.ShowChallengeMenu = function()
+{
+	this._challengeMenu.Show();
+}
 
 GameManagerClass.prototype.BeginEndlessMode = function()
 {

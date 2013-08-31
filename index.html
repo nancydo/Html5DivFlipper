@@ -25,6 +25,8 @@
 		<script type="text/javascript" src="GameManagerClass.js"></script>
 		<script type="text/javascript" src="MainMenu.js"></script>
 		<script type="text/javascript" src="OptionsMenu.js"></script>
+
+		<script type="text/javascript" src="ChallengeMenu.js"></script>
 		<script type="text/javascript" src="SavedStateManagerClass.js"></script>
 		
 		<script type="text/javascript" src="jquery-2.0.1.min.js"></script>
@@ -89,6 +91,10 @@
 						<button onclick="SetCssTheme('Nancy');"> Set Nancy's Theme </button>
 						<button onclick="SetCssTheme('Roy');"> Set Roy's Theme </button>
 					</div>
+				</div>
+
+				<!-- Challenge Menu is created Dynamically, because its basically 25 almost identical buttons -->
+				<div id="challengeMenu">
 				</div>
 			</div>
 			<!-- This is the game area containing the main grid and game stats -->

@@ -1,9 +1,8 @@
 // Constants!
 var MAIN_MENU_BUTTON_TOP = 200;
-var MAIN_MENU_BUTTON_RIGHT_START = 150;
 var MAIN_MENU_BUTTON_RIGHT_FINAL = 50;
 var MAIN_MENU_BUTTON_SPACER = 140;
-var MAIN_MENU_STAGGER_DELAY = 100;
+var MAIN_MENU_STAGGER_DELAY = 20;
 var ANIMATION_LENGTH = 500;
 
 // Description of all of the buttons on this menu.
@@ -62,9 +61,8 @@ MainMenu.prototype.ShowButton = function(buttonIndex)
 	// Have it animate in from the left, by specifying the right to be super far
 	// then in its final place.
 	button.css("display", "block");
-	button.css("right", MAIN_MENU_BUTTON_RIGHT_START + "px");
+	button.css("right", MAIN_MENU_BUTTON_RIGHT_FINAL + "px");
 	button.css("opacity", 0);
-
 
 	// Setup the event handler
 	var _self = this;
@@ -76,7 +74,6 @@ MainMenu.prototype.ShowButton = function(buttonIndex)
 	// After a short delay, move the button to its rightful location.
 	var animateIn = function() 
 		{ 
-			button.css("right", MAIN_MENU_BUTTON_RIGHT_FINAL + "px"); 
 			button.css("opacity", 1);
 		};
 
@@ -115,7 +112,7 @@ MainMenu.prototype.ButtonClick = function(buttonIndex)
 	{
 		callBack = function()
 		{ 
-			GameManager.BeginChallengeMode(10, 20); 
+			GameManager.ShowChallengeMenu();
 		};
 	}
 	else
@@ -129,9 +126,11 @@ MainMenu.prototype.ButtonClick = function(buttonIndex)
 		button.unbind("click");
 	}
 
+	callBack();
+
 	// After stagger delay * number of buttons AND the animation length,
 	// start the game.
-	setTimeout(callBack, ANIMATION_LENGTH + MAIN_MENU_STAGGER_DELAY * MAIN_MENU_BUTTONS.length);
+//	setTimeout(callBack, ANIMATION_LENGTH + MAIN_MENU_STAGGER_DELAY * MAIN_MENU_BUTTONS.length);
 
 	// Hide the main menu.
 	this.Hide();
@@ -148,7 +147,6 @@ MainMenu.prototype.HideButton = function(buttonIndex)
 	// Animate the button away,
 	var animateAway = function()
 	{
-		button.css("right", MAIN_MENU_BUTTON_RIGHT_START + "px");
 		button.css("opacity", 0);
 
 		// Once the animation has completed, lets set it to display: none
