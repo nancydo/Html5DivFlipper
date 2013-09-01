@@ -11,6 +11,7 @@ function LevelManager(gameMode, challengeNumber)
 	this._currentPuzzle = null;
 	this._gameMode = gameMode;
 	this._challenges = [];
+	this._currentStars = 3;
 
 	this.RevealGameComponents();
 
@@ -28,17 +29,39 @@ function LevelManager(gameMode, challengeNumber)
 			_self.GameOver();
 		};
 
-		this._stopWatch = new StopWatch(1000, updateClock, timeOver);
+		this._stopWatch = new StopWatch(1000, updateClock, timeOver, true);
 		this._stopWatch.SetTimeRemaining(30000);
 		this._stopWatch.Start();
+		$("#gameClockIcon").attr('src', 'clock-icon.png');
 	}
 
 	if (this._gameMode == LevelManager.GameModes.Challenge)
 	{
+		this._threshholds = []
+
 		var lowerbound = challengeNumber * 5;
 		var upperbound = lowerbound + 10;
+
+		// 10 seconds of animations
+		var pseudoClicks = Math.ceil((challengeNumber + 1) / 4);
+		var pseudoDiffAvg = LevelManager.PuzzlesPerChallenge * (lowerbound + upperbound) / 2;
+
+		this._threshholds[0] = 10 + pseudoDiffAvg * pseudoClicks / 8;
+		this._threshholds[1] = this._threshholds[0] * 2;
+		this._threshholds[2] = this._threshholds[1] * 2;
+
+		var _self = this;
+		var updateClock = function(timeRemaining)
+		{
+			_self.UpdateClock(timeRemaining);
+		};
+
 		this._challengeNumber = challengeNumber;
 		this._puzzleFactory.GetChallenges(lowerbound, upperbound, LevelManager.PuzzlesPerChallenge, this._challenges);
+		$("#gameLevelLabel").text("Puzzle");
+
+		this._stopWatch = new StopWatch(1000, updateClock, null, false);
+		this._stopWatch.Start();
 	}
 
 	this.StartLevel();
@@ -55,7 +78,8 @@ LevelManager.prototype.RevealGameComponents = function()
 	$("#gameLevelStatus").css("display", "block");
 	$("#resetButton").css("display", "block");
 
-	if (this._gameMode == LevelManager.GameModes.Timed)
+	if (this._gameMode == LevelManager.GameModes.Timed ||
+		this._gameMode == LevelManager.GameModes.Challenge)
 	{
 		$("#gameClockStatus").css("display", "block");
 	}
@@ -69,6 +93,25 @@ LevelManager.prototype.RevealGameComponents = function()
 
 LevelManager.prototype.UpdateClock = function(timeRemaining)
 {
+	if (this._gameMode == LevelManager.GameModes.Challenge)
+	{
+		var timePlayed = timeRemaining / 1000;
+
+		var thresh = 0;
+		timeRemaining = 0;
+		for (thresh = 0; thresh < this._threshholds.length; thresh++)
+		{
+			if (timePlayed < this._threshholds[thresh])
+			{
+				timeRemaining = (this._threshholds[thresh] - timePlayed) * 1000;
+				break;
+			}
+		}
+		this._currentStars = 3 - thresh;
+
+		$("#gameClockIcon").attr('src', this._currentStars + 'stars.png');
+	}
+
 	// Get total seconds remaining.
 	var secondsRemaining = Math.floor(timeRemaining / 1000.0);
 
@@ -93,7 +136,9 @@ LevelManager.prototype.UpdateClock = function(timeRemaining)
 	var gameClock = document.getElementById("gameClockLabel");
 	gameClock.textContent = timeString;
 
-	if (minutesRemaining == 0 && secondsRemaining < 10)
+	if (minutesRemaining == 0 && 
+		secondsRemaining < 10 && 
+		this._gameMode == LevelManager.GameModes.Timed)
 		SoundManager.Play("tick");
 }
 
@@ -116,7 +161,8 @@ LevelManager.prototype.HideGameComponents = function()
 	$("#resetButton").css("display", "none");
 	$("#resetButton").unbind("click");
 
-	if (this._gameMode == LevelManager.GameModes.Timed)
+	if (this._gameMode == LevelManager.GameModes.Timed ||
+		this._gameMode == LevelManager.GameModes.Challenge)
 	{
 		$("#gameClockStatus").css("display", "none");
 	}
@@ -133,8 +179,9 @@ LevelManager.prototype.GameOver = function()
 
 	if (this._gameMode == LevelManager.GameModes.Challenge)
 	{
+		var timePlayed = this._stopWatch.GetTimeRemaining() / 1000;
 		var levelStats = SavedStateManager.GetLevelStats(this._challengeNumber);
-		levelStats.Stars = 3; // :D
+		levelStats.Stars = this._currentStars;
 
 		// Unlock the next level.
 		if (levelStats.Stars > 0)
@@ -143,6 +190,8 @@ LevelManager.prototype.GameOver = function()
 			nextLevelStats.Unlocked = true;
 			SavedStateManager.SaveLevelStats(this._challengeNumber + 1, levelStats);
 		}
+
+		this._stopWatch.Stop();
 
 		// Save the stats of this level.
 		SavedStateManager.SaveLevelStats(this._challengeNumber, levelStats);

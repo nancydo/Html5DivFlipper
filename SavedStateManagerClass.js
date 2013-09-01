@@ -22,7 +22,7 @@ SavedStateManagerClass.prototype.ApplySettings = function()
 SavedStateManagerClass.prototype.LoadData = function()
 {
 	var cookies = document.cookie.split(';');
-    if (cookies[0]) 
+    if (cookies[0])
     	this._savedState = JSON.parse(unescape(cookies[0]));
 };
 

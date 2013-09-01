@@ -1,9 +1,10 @@
-StopWatch = function(interval, onTickCallback, onCompleteCallback)
+StopWatch = function(interval, onTickCallback, onCompleteCallback, countDown)
 {
 	this._interval = interval;
 	this._timeRemaining = 0;
 	this._onTickCallback = onTickCallback;
 	this._onCompleteCallback = onCompleteCallback;	
+	this._countDown = countDown;
 	this._intervalId;
 };
 
@@ -14,6 +15,15 @@ StopWatch = function(interval, onTickCallback, onCompleteCallback)
 StopWatch.prototype.SetTimeRemaining = function(milliseconds) 
 {
 	this._timeRemaining = milliseconds;
+};
+
+/************************************************
+ * Gets the time remaining (in milliseconds) for this
+ * stopwatch.
+ ************************************************/
+StopWatch.prototype.GetTimeRemaining = function() 
+{
+	return this._timeRemaining;
 };
 
 /************************************************
@@ -50,7 +60,7 @@ StopWatch.prototype.Start = function()
  ************************************************/
 StopWatch.prototype.OnTick = function()
 {
-	this._timeRemaining -= this._interval;
+	this._timeRemaining += this._countDown ? -this._interval : this._interval;
 	this._onTickCallback(this._timeRemaining);
 
 	if (this._timeRemaining < 0)
